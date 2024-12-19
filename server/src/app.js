@@ -41,10 +41,11 @@ app.patch('/user', async (req, res) => {
 	try {
 		await User.findByIdAndUpdate({ _id: userId }, data, {
 			returnDocument: 'before',
+			runValidators: true, //it will run the validator on schema since by default validator do not work on the PATCH/PUT
 		});
 		res.send('User Updated successfully');
 	} catch (err) {
-		res.status(400).send('Something went wrong');
+		res.status(400).send('UPDATE FAILED!' + err.message);
 	}
 });
 // feed route - get all the user
