@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-// the the user by email id
+// get the the user by email id
 app.get('/user', async (req, res) => {
 	const userEmail = req.body.emailId;
 	try {
@@ -21,6 +21,32 @@ app.get('/user', async (req, res) => {
 	}
 });
 
+// Delete the user by ID
+app.delete('/user', async (req, res) => {
+	const userId = req.body.userId;
+	try {
+		// await User.findByIdAndDelete({_id: userId})
+		// or below(Both will work same)
+		await User.findOneAndDelete(userId);
+		res.send('User Deleted Successfully');
+	} catch (err) {
+		res.status(400).send('Something went wrong');
+	}
+});
+
+// Update a user by ID
+app.patch('/user', async (req, res) => {
+	const userId = req.body.userId;
+	const data = req.body;
+	try {
+		await User.findByIdAndUpdate({ _id: userId }, data, {
+			returnDocument: 'before',
+		});
+		res.send('User Updated successfully');
+	} catch (err) {
+		res.status(400).send('Something went wrong');
+	}
+});
 // feed route - get all the user
 app.get('/feed', async (req, res) => {
 	try {
