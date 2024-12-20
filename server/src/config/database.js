@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const connectDB = async () => {
 	await mongoose.connect('mongodb://localhost:27017/devTinder');
@@ -25,11 +26,24 @@ const userSchema = new mongoose.Schema(
 			unique: true,
 			lowercase: true,
 			trim: true,
+			validate(value) {
+				if (!validator.isEmail(value)) {
+					throw new Error('Invalid email address' + value);
+				}
+			},
 		},
 		password: {
 			type: String,
 			required: true,
-			minLength: 6,
+			minLength: 8,
+			validate(value) {
+				if (!validator.isStrongPassword(value)) {
+					throw new Error(
+						'Password must be at least 8 char, 1 uppercas, 1 lowercase, 1 special char, 1 no.' +
+							value,
+					);
+				}
+			},
 		},
 		age: {
 			type: Number,
@@ -50,6 +64,11 @@ const userSchema = new mongoose.Schema(
 			trim: true,
 			default:
 				'https://www.pnrao.com/wp-content/uploads/2023/06/dummy-user-male.jpg',
+			validate(value) {
+				if (!validator.isURL(value)) {
+					throw new Error('Invalid photo URL' + value);
+				}
+			},
 		},
 		about: {
 			type: String,
