@@ -1,10 +1,24 @@
 const express = require('express');
 const connectDB = require('./config/database');
+const app = express();
 const User = require('./models/user');
 
-const app = express();
-
 app.use(express.json());
+
+// Signing up the user
+app.post('/signup', async (req, res) => {
+	// creating new instance of the User model
+	// console.log(req.body);
+	const user = new User(req.body);
+	try {
+		await user.save();
+		res.send('User added successfully');
+	} catch (err) {
+		res
+			.status(400)
+			.send({ error: 'Error saving the user', message: err.message });
+	}
+});
 
 // get the the user by email id
 app.get('/user', async (req, res) => {
@@ -36,7 +50,7 @@ app.delete('/user', async (req, res) => {
 
 // Update a user by ID
 app.patch('/user/:userId', async (req, res) => {
-	const userId = req.params.userId;
+	const userId = req.params?.userId;
 	const data = req.body;
 	try {
 		// API level data sanitization for strict checks
@@ -56,7 +70,7 @@ app.patch('/user/:userId', async (req, res) => {
 		});
 		res.send('User Updated successfully');
 	} catch (err) {
-		res.status(400).send('UPDATE FAILED!' + err.message);
+		res.status(400).send({ error: 'UPDATE FAILED!', message: err.message });
 	}
 });
 // feed route - get all the user
@@ -66,18 +80,6 @@ app.get('/feed', async (req, res) => {
 		res.send(users);
 	} catch (err) {
 		res.status(400).send('Something went wrong');
-	}
-});
-
-app.post('/signup', async (req, res) => {
-	// creating new instance of the User model
-	// console.log(req.body);
-	const user = new User(req.body);
-	try {
-		await user.save();
-		res.send('User added successfully');
-	} catch (err) {
-		res.status(400).send('Error saving the user', err.message);
 	}
 });
 
