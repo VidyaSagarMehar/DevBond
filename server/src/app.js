@@ -2,15 +2,25 @@ const express = require('express');
 const connectDB = require('./config/database');
 const app = express();
 const User = require('./models/user');
+const { validateSignUpData } = require('./utils/validation');
+const bcrypt = require('bcrypt');
 
 app.use(express.json());
 
 // Signing up the user
 app.post('/signup', async (req, res) => {
-	// creating new instance of the User model
-	// console.log(req.body);
-	const user = new User(req.body);
 	try {
+		// Validation of the data
+		validateSignUpData(req);
+
+		const { password } = req.body;
+		// Encrypt the password
+		const passwordHash = bcrypt.hash(password, 10);
+
+		// creating new instance of the User model
+		// console.log(req.body);
+		const user = new User(req.body);
+
 		await user.save();
 		res.send('User added successfully');
 	} catch (err) {
@@ -80,6 +90,13 @@ app.get('/feed', async (req, res) => {
 		res.send(users);
 	} catch (err) {
 		res.status(400).send('Something went wrong');
+	}
+});
+
+// Error handling - Default error
+app.use('/', (err, req, res, next) => {
+	if (err) {
+		res.status(500).send('Something went wrong');
 	}
 });
 
