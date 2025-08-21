@@ -13,13 +13,18 @@ app.post('/signup', async (req, res) => {
 		// Validation of the data
 		validateSignUpData(req);
 
-		const { password } = req.body;
 		// Encrypt the password
-		const passwordHash = bcrypt.hash(password, 10);
+		const { firstName, lastName, emailId, password } = req.body;
+		const passwordHash = await bcrypt.hash(password, 10);
 
 		// creating new instance of the User model
 		// console.log(req.body);
-		const user = new User(req.body);
+		const user = new User({
+			firstName,
+			lastName,
+			emailId,
+			password: passwordHash,
+		});
 
 		await user.save();
 		res.send('User added successfully');
