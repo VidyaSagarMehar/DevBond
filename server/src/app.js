@@ -35,6 +35,30 @@ app.post('/signup', async (req, res) => {
 	}
 });
 
+// Login the user
+app.post('/login', async (req, res) => {
+	try {
+		const { emailId, password } = req.body;
+
+		// check if the user is present in the DB
+		const user = await User.findOne({ emailId: emailId });
+		if (!user) {
+			throw new Error('Invalid credentials');
+		}
+
+		// chech the password is correct or not
+		const isPasswordValid = await bcrypt.compare(password, user.password);
+
+		if (isPasswordValid) {
+			res.send('User Login successfulyl');
+		} else {
+			throw new Error('Password is not correct');
+		}
+	} catch (err) {
+		res.status(400).send({ error: 'error login', message: err.message });
+	}
+});
+
 // get the the user by email id
 app.get('/user', async (req, res) => {
 	const userEmail = req.body.emailId;
@@ -46,7 +70,7 @@ app.get('/user', async (req, res) => {
 			res.send(users);
 		}
 	} catch (err) {
-		res.status(400).send('Something went wrong');
+		res.status(400).send('error :' + err.message);
 	}
 });
 
