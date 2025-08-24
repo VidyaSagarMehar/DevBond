@@ -47,13 +47,17 @@ const userSchema = new mongoose.Schema(
 		},
 		gender: {
 			type: String,
-			validate(value) {
-				//custom validation check method
-				// validation will not work on PUT/PATCH method, It only works while the document/user is about to be created for the first time
-				if (!['male', 'female', 'other'].includes(value)) {
-					throw new Error('Gender data is not valid');
-				}
+			enum: {
+				values: ['male', 'female', 'other'],
+				message: `{VALUE} is not a valid gender type`,
 			},
+			// validate(value) {
+			// 	//custom validation check method
+			// 	// validation will not work on PUT/PATCH method, It only works while the document/user is about to be created for the first time
+			// 	if (!['male', 'female', 'other'].includes(value)) {
+			// 		throw new Error('Gender data is not valid');
+			// 	}
+			// },
 		},
 		photoUrl: {
 			type: String,

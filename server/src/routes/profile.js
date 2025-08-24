@@ -39,4 +39,6 @@ profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
 	}
 });
 
+// TODO: Edit password/forgot password route to be added
+
 module.exports = profileRouter;
