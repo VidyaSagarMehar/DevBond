@@ -26,6 +26,10 @@ const connectionRequestSchema = new mongoose.Schema(
 	},
 );
 
+// Compound INDEX in ascending order (1 ascending, -1 descending)
+// ConenctionRequest.find({fromUserId:5464644, toUserId:54564646})
+connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
+
 // pre fucntion
 connectionRequestSchema.pre('save', function (next) {
 	const connectionRequest = this;
