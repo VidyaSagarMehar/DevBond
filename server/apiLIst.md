@@ -13,8 +13,7 @@
 ### connectionRequestRouter
 - POST /request/send/:status/:userId //status can be ignored/intrested
 
-- POST /request/review/accepted/:requestId
-- POST /request/review/rejected/:requestId
+- POST /request/review/:status/:requestId // status can be accepted\rejected
 
 ### userRouter
 - GET /user/connections
