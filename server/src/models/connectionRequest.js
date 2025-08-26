@@ -11,6 +11,7 @@ const connectionRequestSchema = new mongoose.Schema(
 		// connection is sent to this user
 		toUserId: {
 			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
 			require: true,
 		},
 		status: {
