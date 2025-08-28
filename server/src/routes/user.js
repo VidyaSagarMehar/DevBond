@@ -2,6 +2,7 @@ const express = require('express');
 const userRouter = express.Router();
 const { userAuth } = require('../middleware/auth');
 const ConnectionRequest = require('../models/connectionRequest');
+const User = require('../models/user');
 
 const USER_SAFE_DATA = 'firstName lastName photoUrl age gender about skills';
 
@@ -58,4 +59,42 @@ userRouter.get('/user/connections', userAuth, async (req, res) => {
 		});
 	}
 });
+
+// Get all the available users
+userRouter.get('/feed', userAuth, async (req, res) => {
+	try {
+		// User should see all the user cards except
+		// 1. His own card 2. his connections, 3. Ignored people 4. Already sent the connection
+
+		const loggedInUser = req.user;
+
+		// Find all connection request (sent + received)
+		const connectionRequests = await ConnectionRequest.find({
+			$or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+		}).select('fromUserId toUserId');
+
+		const hideUsersFromFeed = new Set();
+		connectionRequests.forEach((req) => {
+			hideUsersFromFeed.add(req.fromUserId.toString());
+			hideUsersFromFeed.add(req.toUserId.toString());
+		});
+		console.log(hideUsersFromFeed);
+
+		// find all the user who are not in the array and the logged in user also should not be there
+		const users = await User.find({
+			$and: [
+				{ _id: { $nin: Array.from(hideUsersFromFeed) } },
+				{ _id: { $ne: loggedInUser._id } },
+			],
+		}).select(USER_SAFE_DATA);
+
+		res.send(users);
+	} catch (err) {
+		res.status(400).send({
+			error: 'error getting the data',
+			message: err.message,
+		});
+	}
+});
+
 module.exports = userRouter;
