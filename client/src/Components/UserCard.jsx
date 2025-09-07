@@ -4,9 +4,9 @@ const UserCard = ({ user }) => {
 	const { firstName, lastName, photoUrl, about, age, gender } = user;
 	return (
 		<div>
-			<div className="card bg-base-100 w-96 shadow-sm">
+			<div className="card bg-base-300 w-96 shadow-sm">
 				<figure>
-					<img src={user.photoUrl} alt="Profile Image" />
+					<img src={photoUrl} alt="Profile Image" />
 				</figure>
 				<div className="card-body">
 					<h2 className="card-title">{firstName + ' ' + lastName}</h2>
