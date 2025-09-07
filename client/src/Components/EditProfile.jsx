@@ -17,15 +17,20 @@ const EditProfile = ({ user }) => {
 	const dispatch = useDispatch();
 
 	const saveProfile = async () => {
+		// Clear Error
+		setError('');
 		try {
 			const res = await axios.patch(
 				BASE_URL + '/profile/edit',
 				{ firstName, lastName, photoUrl, gender, age, about },
 				{ withCredentials: true },
 			);
+			// adding the updated data to redux store
 			dispatch(addUser(res?.data?.data));
+			// TODO: toastify msg data saved
 		} catch (err) {
-			setError(err.message);
+			// console.log(err.response.data.message);
+			setError(err.response.data.message);
 		}
 	};
 
@@ -76,6 +81,7 @@ const EditProfile = ({ user }) => {
 								/>
 							</fieldset>
 							<fieldset className="fieldset">
+								{/* TODO: Gender should eb a drop down */}
 								<legend className="fieldset-legend">Gender</legend>
 								<input
 									type="text"
@@ -85,6 +91,7 @@ const EditProfile = ({ user }) => {
 								/>
 							</fieldset>
 							<fieldset className="fieldset">
+								{/* TODO: Add textArea */}
 								<legend className="fieldset-legend">About</legend>
 								<input
 									type="text"
