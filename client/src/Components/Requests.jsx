@@ -1,39 +1,38 @@
-import React, { useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect } from 'react';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { addConnections } from '../utils/connectionSlice';
+import { addRequests } from '../utils/requestSlice';
 
-const Connections = () => {
-	const connections = useSelector((store) => store.connections);
+const Requests = () => {
+	const requests = useSelector((store) => store.requests);
 	const dispatch = useDispatch();
-
-	const fetchConnections = async () => {
+	const fetchRequest = async () => {
 		try {
-			const res = await axios.get(BASE_URL + '/user/connections', {
+			const res = await axios.get(BASE_URL + '/user/requests/received', {
 				withCredentials: true,
 			});
-			dispatch(addConnections(res.data.data));
+			dispatch(addRequests(res.data.data));
 		} catch (err) {
-			// TODO: Toastify error
+			// TODO: Toastify
 			console.log(err.message);
 		}
 	};
 
 	useEffect(() => {
-		fetchConnections();
+		fetchRequest();
 	}, []);
 
-	if (!connections) return;
-	if (connections.length === 0)
-		return <h1 className="font-bold text-xl">No Connections Found</h1>;
+	if (!requests) return;
+	if (requests.length === 0)
+		return <h1 className="font-bold text-xl">No Request Found</h1>;
 
 	return (
 		<div className="text-center my-10">
-			<h1 className="font-bold text-xl">Connections</h1>
-			{connections.map((connection) => {
+			<h1 className="font-bold text-xl">Connections Requests</h1>
+			{requests.map((request) => {
 				const { _id, firstName, lastName, photoUrl, gender, age, about } =
-					connection;
+					request.fromUserId;
 				return (
 					<div
 						key={_id}
@@ -60,4 +59,4 @@ const Connections = () => {
 	);
 };
 
-export default Connections;
+export default Requests;

@@ -1,6 +1,7 @@
 import React, { use } from 'react';
 
 const UserCard = ({ user }) => {
+	if (!user) return null;
 	const { firstName, lastName, photoUrl, about, age, gender } = user;
 	return (
 		<div>
