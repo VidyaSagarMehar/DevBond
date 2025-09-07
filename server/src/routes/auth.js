@@ -22,7 +22,12 @@ authRouter.post('/signup', async (req, res) => {
 			password: passwordHash,
 		});
 
-		await user.save();
+		const savedUser = await user.save();
+		const token = await savedUser.getJWT();
+		console.log(token);
+		// Add the token to cookie and send the response back to the user
+		res.cookie('token', token);
+
 		res.json({ message: 'User Added successfully!', data: savedUser });
 	} catch (err) {
 		res
