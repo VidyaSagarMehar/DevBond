@@ -4,7 +4,8 @@ const { userAuth } = require('../middleware/auth');
 const ConnectionRequest = require('../models/connectionRequest');
 const User = require('../models/user');
 
-const USER_SAFE_DATA = 'firstName lastName photoUrl age gender about skills';
+const USER_SAFE_DATA =
+	'firstName lastName photoUrl age gender about skills role location github linkedin website';
 
 // Get all the pending connection request for the loggedIn user
 userRouter.get('/user/requests/received', userAuth, async (req, res) => {

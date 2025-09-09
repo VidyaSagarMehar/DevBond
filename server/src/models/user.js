@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
 			trim: true,
 			validate(value) {
 				if (!validator.isEmail(value)) {
-					throw new Error('Invalid email address' + value);
+					throw new Error('Invalid email address ' + value);
 				}
 			},
 		},
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
 			validate(value) {
 				if (!validator.isStrongPassword(value)) {
 					throw new Error(
-						'Password must be at least 8 char, 1 uppercas, 1 lowercase, 1 special char, 1 no.' +
+						'Password must be at least 8 char, 1 uppercase, 1 lowercase, 1 special char, 1 number. Got: ' +
 							value,
 					);
 				}
@@ -47,17 +47,11 @@ const userSchema = new mongoose.Schema(
 		},
 		gender: {
 			type: String,
+			lowercase: true,
 			enum: {
 				values: ['male', 'female', 'other'],
 				message: `{VALUE} is not a valid gender type`,
 			},
-			// validate(value) {
-			// 	//custom validation check method
-			// 	// validation will not work on PUT/PATCH method, It only works while the document/user is about to be created for the first time
-			// 	if (!['male', 'female', 'other'].includes(value)) {
-			// 		throw new Error('Gender data is not valid');
-			// 	}
-			// },
 		},
 		photoUrl: {
 			type: String,
@@ -66,7 +60,7 @@ const userSchema = new mongoose.Schema(
 				'https://www.pnrao.com/wp-content/uploads/2023/06/dummy-user-male.jpg',
 			validate(value) {
 				if (!validator.isURL(value)) {
-					throw new Error('Invalid photo URL' + value);
+					throw new Error('Invalid photo URL ' + value);
 				}
 			},
 		},
@@ -76,6 +70,45 @@ const userSchema = new mongoose.Schema(
 		},
 		skills: {
 			type: [String],
+		},
+
+		// 🔥 New fields for profile enhancements
+		role: {
+			type: String,
+			trim: true,
+			default: '',
+		},
+		location: {
+			type: String,
+			trim: true,
+			default: '',
+		},
+		github: {
+			type: String,
+			trim: true,
+			validate(value) {
+				if (value && !validator.isURL(value)) {
+					throw new Error('Invalid GitHub URL ' + value);
+				}
+			},
+		},
+		linkedin: {
+			type: String,
+			trim: true,
+			validate(value) {
+				if (value && !validator.isURL(value)) {
+					throw new Error('Invalid LinkedIn URL ' + value);
+				}
+			},
+		},
+		website: {
+			type: String,
+			trim: true,
+			validate(value) {
+				if (value && !validator.isURL(value)) {
+					throw new Error('Invalid Website URL ' + value);
+				}
+			},
 		},
 	},
 	{ timestamps: true },
