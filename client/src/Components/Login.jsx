@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Eye, EyeOff, Code2 } from 'lucide-react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../utils/userSlice';
+import { addUser, removeUser } from '../utils/userSlice';
+import { clearFeed } from '../utils/feedSlice';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 import toast from 'react-hot-toast';
@@ -35,6 +36,10 @@ const Login = () => {
 			const res = await axios.post(BASE_URL + endpoint, payload, {
 				withCredentials: true,
 			});
+
+			// Clear old state before setting new
+			dispatch(removeUser());
+			dispatch(clearFeed());
 
 			dispatch(addUser(res.data.data || res.data));
 			toast.success(isLoginForm ? 'Welcome back! 🚀' : 'Account created! 🎉');

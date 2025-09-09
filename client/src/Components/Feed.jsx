@@ -11,11 +11,10 @@ import toast from 'react-hot-toast';
 const Feed = () => {
 	const [loading, setLoading] = useState(false);
 	const feed = useSelector((store) => store.feed);
+	const user = useSelector((store) => store.user.data);
 	const dispatch = useDispatch();
 
 	const getFeed = async () => {
-		if (feed.length > 0) return;
-
 		try {
 			setLoading(true);
 			const res = await axios.get(BASE_URL + '/feed', {
@@ -32,8 +31,10 @@ const Feed = () => {
 	};
 
 	useEffect(() => {
-		getFeed();
-	}, []);
+		if (user) {
+			getFeed();
+		}
+	}, [user]);
 
 	if (loading) {
 		return (
