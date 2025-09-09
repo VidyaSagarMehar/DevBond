@@ -1,41 +1,82 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart } from 'lucide-react';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { addFeed } from '../utils/feedSlice';
 import UserCard from './UserCard';
+import toast from 'react-hot-toast';
 
 const Feed = () => {
+	const [loading, setLoading] = useState(false);
 	const feed = useSelector((store) => store.feed);
 	const dispatch = useDispatch();
 
 	const getFeed = async () => {
 		if (feed.length > 0) return;
+
 		try {
+			setLoading(true);
 			const res = await axios.get(BASE_URL + '/feed', {
 				withCredentials: true,
 			});
+			console.log('Feed response:', res.data.data);
 			dispatch(addFeed(res.data.data));
-			console.log(res.data);
 		} catch (err) {
-			// TODO: error page
-			console.error(err.message);
+			toast.error('Failed to load feed');
+			console.error(err);
+		} finally {
+			setLoading(false);
 		}
 	};
+
 	useEffect(() => {
 		getFeed();
 	}, []);
 
+	if (loading) {
+		return (
+			<div className="flex items-center justify-center min-h-[600px]">
+				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+			</div>
+		);
+	}
+
 	if (!feed || feed.length === 0) {
-		return <h1>No new users found!</h1>;
+		return (
+			<div className="flex flex-col items-center justify-center min-h-[600px] text-center px-6">
+				<div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+					<Heart className="w-12 h-12 text-blue-500" />
+				</div>
+				<h2 className="text-2xl font-bold text-gray-800 mb-3">
+					No more developers nearby!
+				</h2>
+				<p className="text-gray-600 max-w-md">
+					You've seen all available developers in your area. Check back later
+					for new matches!
+				</p>
+			</div>
+		);
 	}
 
 	return (
-		feed && (
-			<div className=" flex justify-center my-10">
-				<UserCard user={feed[0]} />
+		<div className="container mx-auto px-4 py-8">
+			<div className="text-center mb-8">
+				<h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+					Discover Developers
+				</h1>
+				<p className="text-gray-600 mt-2">
+					Swipe right to connect, left to pass
+				</p>
 			</div>
-		)
+
+			<AnimatePresence mode="wait">
+				{feed.length > 0 && (
+					<UserCard key={feed[0]._id} user={feed[0]} showActions={true} />
+				)}
+			</AnimatePresence>
+		</div>
 	);
 };
 
