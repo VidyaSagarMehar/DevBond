@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
@@ -9,7 +10,7 @@ const userAuth = async (req, res, next) => {
 			return res.status(401).send('Please login');
 		}
 		// validate the token
-		const decodeObj = await jwt.verify(token, 'ThisIsMySecretKey');
+		const decodeObj = await jwt.verify(token, process.env.JWT_SECRET);
 
 		// find the user
 		const { _id } = decodeObj;
