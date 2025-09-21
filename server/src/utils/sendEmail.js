@@ -40,7 +40,7 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
 
 const run = async (subject, body) => {
 	const sendEmailCommand = createSendEmailCommand(
-		'vidyasagark890@gmail.com', // recipient email
+		'vidyasagark890@gmail.com', // recipient email TODO: dynamic email ID to be added
 		'vidyasagarmehar@gmail.com', //sender email
 		subject,
 		body,
