@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-import { Home, Heart, Users, User, LogOut, Code2 } from 'lucide-react';
+import {
+	Home,
+	Heart,
+	Users,
+	User,
+	LogOut,
+	Code2,
+	BadgeCheck,
+} from 'lucide-react';
 import { removeUser } from '../utils/userSlice';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
@@ -117,6 +125,11 @@ const NavBar = () => {
 									/>
 								</div>
 								<div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+							</Link>
+							<Link to="/premium" className="flex items-center space-x-2">
+								<div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+									<BadgeCheck className="w-5 h-5 text-white" />
+								</div>
 							</Link>
 						</div>
 					</div>
