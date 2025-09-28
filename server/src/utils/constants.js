@@ -1,5 +1,5 @@
-const membershipAmmount = {
+const membershipAmount = {
 	silver: 300,
 	gold: 700,
 };
-module.exports = { membershipAmmount };
+module.exports = { membershipAmount };
