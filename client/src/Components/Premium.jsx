@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 const Premium = () => {
 	// Handler function to verify the payment - after the payment was made by a user
 	const [isUserPremium, setIsUserPremium] = useState(false);
-	// if the user is verified then we should check it also at the start of the app
+	// update premium verification on page load
 	useEffect(() => {
 		verifyPremiumUser();
 	}, []);
