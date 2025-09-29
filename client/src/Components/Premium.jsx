@@ -2,10 +2,15 @@ import React from 'react';
 import { BASE_URL } from '../utils/constants';
 import axios from 'axios';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Premium = () => {
 	// Handler function to verify the payment - after the payment was made by a user
 	const [isUserPremium, setIsUserPremium] = useState(false);
+	// if the user is verified then we should check it also at the start of the app
+	useEffect(() => {
+		verifyPremiumUser();
+	}, []);
 	const verifyPremiumUser = async () => {
 		const res = await axios.get(BASE_URL + '/premium/verify', {
 			withCredentials: true,
