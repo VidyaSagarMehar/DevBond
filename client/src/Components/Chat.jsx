@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { createSocketConnection } from '../utils/socket';
 
 const Chat = () => {
 	const { targetUserId } = useParams();
-
 	const [messages, setMessages] = useState([{ text: 'Hello world' }]);
+	const user = useSelector((store) => store.user);
+	const userId = user?._id; //loggedIn User Id from Redux store
 
-	console.log(targetUserId);
+	useEffect(() => {
+		const socket = createSocketConnection();
+		// As soon as the page loaded, the socket connection is made and joinChat event is emitted
+		socket.emit('joinChat', { userId, targetUserId });
+
+		// as soon as compomnent unloads - diconnect the socket
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
+
 	return (
 		<div className="text-black w-1/2 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
 			<h1 className="p-5  border-b border-gray-600">Chat</h1>
