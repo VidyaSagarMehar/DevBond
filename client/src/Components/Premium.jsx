@@ -55,7 +55,7 @@ const Premium = () => {
 		rzp.open();
 	};
 	return isUserPremium ? (
-		"You're already a premium member"
+		<div className="text-black">You're already a premium member</div>
 	) : (
 		<div className="flex w-full text-white m-10 mx-auto">
 			<div className="card bg-base-200 rounded-box grid h-80 grow place-items-center">

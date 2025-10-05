@@ -11,6 +11,7 @@ import Connections from './Components/Connections';
 import Requests from './Components/Requests';
 import { Toaster } from 'react-hot-toast';
 import Premium from './Components/Premium';
+import Chat from './Components/Chat';
 
 function App() {
 	return (
@@ -25,6 +26,7 @@ function App() {
 								<Route path="/connections" element={<Connections />} />
 								<Route path="/requests" element={<Requests />} />
 								<Route path="/premium" element={<Premium />} />
+								<Route path="/chat/:targetUserId" element={<Chat />} />
 							</Route>
 							<Route path="/login" element={<Login />} />
 						</Routes>

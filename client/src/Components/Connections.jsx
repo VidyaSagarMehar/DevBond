@@ -6,6 +6,7 @@ import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnections } from '../utils/connectionSlice';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 const ConnectionCard = ({ connection, index }) => {
 	const {
@@ -87,7 +88,9 @@ const ConnectionCard = ({ connection, index }) => {
 						className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl text-sm font-medium transition-colors flex items-center justify-center space-x-2"
 					>
 						<MessageCircle className="w-4 h-4" />
-						<span>Message</span>
+						<Link to={'/chat/' + _id}>
+							<span>Message</span>
+						</Link>
 					</motion.button>
 
 					<motion.button
