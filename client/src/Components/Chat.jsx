@@ -5,7 +5,7 @@ import { createSocketConnection } from '../utils/socket';
 
 const Chat = () => {
 	const { targetUserId } = useParams();
-	const [messages, setMessages] = useState([{ text: 'Hello world' }]);
+	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState('');
 	const user = useSelector((store) => store.user);
 	const userId = user?.data?._id; //loggedIn User Id from Redux store
@@ -19,6 +19,12 @@ const Chat = () => {
 		const socket = createSocketConnection();
 		// As soon as the page loaded, the socket connection is made and joinChat event is emitted
 		socket.emit('joinChat', { firstName, userId, targetUserId });
+
+		// reciving the messages send from the server
+		socket.on('messageRecieved', ({ firstName, text }) => {
+			console.log(firstName + ' : ' + text);
+			setMessages((messages) => [...messages, { firstName, text }]);
+		});
 
 		// as soon as compomnent unloads - diconnect the socket
 		return () => {
@@ -34,6 +40,7 @@ const Chat = () => {
 			targetUserId,
 			text: newMessage,
 		});
+		setNewMessage('');
 	};
 
 	// Prevent rendering chat UI before userId is ready
@@ -42,7 +49,7 @@ const Chat = () => {
 	}
 
 	return (
-		<div className="text-black w-1/2 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
+		<div className="text-black w-3/4 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
 			<h1 className="p-5  border-b border-gray-600">Chat</h1>
 			<div className="flex-1 overflow-scroll p-5">
 				{/* Dispaly Messages*/}
@@ -50,10 +57,10 @@ const Chat = () => {
 					return (
 						<div key={index} className="chat chat-start">
 							<div className="chat-header">
-								Vidya Sagar
+								{msg.firstName}
 								<time className="text-xs opacity-50">2 hours ago</time>
 							</div>
-							<div className="chat-bubble">You were the chosen one </div>
+							<div className="chat-bubble">{msg.text} </div>
 							<div className="chat-footer opacity-50">seen</div>
 						</div>
 					);
