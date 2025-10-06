@@ -6,19 +6,40 @@ import { createSocketConnection } from '../utils/socket';
 const Chat = () => {
 	const { targetUserId } = useParams();
 	const [messages, setMessages] = useState([{ text: 'Hello world' }]);
+	const [newMessage, setNewMessage] = useState('');
 	const user = useSelector((store) => store.user);
-	const userId = user?._id; //loggedIn User Id from Redux store
+	const userId = user?.data?._id; //loggedIn User Id from Redux store
+	const firstName = user?.data?.firstName;
 
 	useEffect(() => {
+		if (!userId || !targetUserId) {
+			return;
+		}
+
 		const socket = createSocketConnection();
 		// As soon as the page loaded, the socket connection is made and joinChat event is emitted
-		socket.emit('joinChat', { userId, targetUserId });
+		socket.emit('joinChat', { firstName, userId, targetUserId });
 
 		// as soon as compomnent unloads - diconnect the socket
 		return () => {
 			socket.disconnect();
 		};
-	}, []);
+	}, [userId, targetUserId]);
+
+	const sendMessage = () => {
+		const socket = createSocketConnection();
+		socket.emit('sendMessage', {
+			firstName,
+			userId,
+			targetUserId,
+			text: newMessage,
+		});
+	};
+
+	// Prevent rendering chat UI before userId is ready
+	if (!userId) {
+		return <div className="text-center p-5">Loading chat...</div>;
+	}
 
 	return (
 		<div className="text-black w-1/2 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
@@ -40,10 +61,14 @@ const Chat = () => {
 			</div>
 			<div className="p-5 border border-t border-gray-600 flex items-center">
 				<input
+					value={newMessage}
+					onChange={(e) => setNewMessage(e.target.value)}
 					type="text"
 					className="outline flex-1 border-gray-500 text-black"
 				/>
-				<button className="btn btn-secondary m-2">Send</button>
+				<button onClick={sendMessage} className="btn btn-secondary m-2">
+					Send
+				</button>
 			</div>
 		</div>
 	);
