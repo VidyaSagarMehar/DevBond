@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { createSocketConnection } from '../utils/socket';
+import axios from 'axios';
+import { BASE_URL } from '../utils/constants';
 
 const Chat = () => {
 	const { targetUserId } = useParams();
@@ -10,6 +12,26 @@ const Chat = () => {
 	const user = useSelector((store) => store.user);
 	const userId = user?.data?._id; //loggedIn User Id from Redux store
 	const firstName = user?.data?.firstName;
+	const lastName = user?.data?.lastName;
+
+	const fetchChatMessages = async () => {
+		const chat = await axios.get(BASE_URL + '/chat/' + targetUserId, {
+			withCredentials: true,
+		});
+		console.log(chat.data.messages);
+		const chatMessages = chat?.data?.messages.map((msg) => {
+			const { senderId, text } = msg;
+			return {
+				firstName: senderId?.firstName,
+				lastName: senderId?.lastName,
+				text,
+			};
+		});
+		setMessages(chatMessages);
+	};
+	useEffect(() => {
+		fetchChatMessages();
+	}, []);
 
 	useEffect(() => {
 		if (!userId || !targetUserId) {
@@ -21,9 +43,9 @@ const Chat = () => {
 		socket.emit('joinChat', { firstName, userId, targetUserId });
 
 		// reciving the messages send from the server
-		socket.on('messageRecieved', ({ firstName, text }) => {
+		socket.on('messageRecieved', ({ firstName, lastName, text }) => {
 			console.log(firstName + ' : ' + text);
-			setMessages((messages) => [...messages, { firstName, text }]);
+			setMessages((messages) => [...messages, { firstName, lastName, text }]);
 		});
 
 		// as soon as compomnent unloads - diconnect the socket
@@ -36,6 +58,7 @@ const Chat = () => {
 		const socket = createSocketConnection();
 		socket.emit('sendMessage', {
 			firstName,
+			lastName,
 			userId,
 			targetUserId,
 			text: newMessage,
@@ -57,7 +80,7 @@ const Chat = () => {
 					return (
 						<div key={index} className="chat chat-start">
 							<div className="chat-header">
-								{msg.firstName}
+								{msg.firstName + ' ' + msg.lastName}
 								<time className="text-xs opacity-50">2 hours ago</time>
 							</div>
 							<div className="chat-bubble">{msg.text} </div>
