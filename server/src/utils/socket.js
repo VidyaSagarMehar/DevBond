@@ -1,6 +1,7 @@
 const socket = require('socket.io');
 const crypto = require('crypto');
 const { Chat } = require('../models/chat');
+const connectionRequest = require('../models/connectionRequest');
 
 // Creating encrypted room id
 const getSecretRoomId = (userId, targetUserId) => {
@@ -31,6 +32,9 @@ const initializeSocket = (server) => {
 			async ({ firstName, lastName, userId, targetUserId, text }) => {
 				// Save messages to the database
 				try {
+					//TODO: check if the userId and the targetUserId are friend
+					// connectionRequest.findOne({fromUserId : userId, toUserId: targetUserId, status: "accepted"})
+
 					const roomId = getSecretRoomId(userId, targetUserId);
 					console.log(firstName + ' ' + text);
 
