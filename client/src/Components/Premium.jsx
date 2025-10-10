@@ -1,92 +1,95 @@
-import React from 'react';
-import { BASE_URL } from '../utils/constants';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { BASE_URL } from '../utils/constants';
+import toast from 'react-hot-toast';
 
 const Premium = () => {
-	// Handler function to verify the payment - after the payment was made by a user
 	const [isUserPremium, setIsUserPremium] = useState(false);
-	// update premium verification on page load
+
 	useEffect(() => {
 		verifyPremiumUser();
 	}, []);
+
 	const verifyPremiumUser = async () => {
-		const res = await axios.get(BASE_URL + '/premium/verify', {
-			withCredentials: true,
-		});
-		if (res.data.isPremium) {
-			setIsUserPremium(true);
+		try {
+			const res = await axios.get(BASE_URL + '/premium/verify', {
+				withCredentials: true,
+			});
+			if (res.data.isPremium) setIsUserPremium(true);
+		} catch {
+			toast.error('Failed to verify premium status');
 		}
 	};
 
 	const handleBuyClick = async (type) => {
-		const order = await axios.post(
-			BASE_URL + '/payment/create',
-			{
-				membershipType: type,
-			},
-			{ withCredentials: true },
+		try {
+			const order = await axios.post(
+				BASE_URL + '/payment/create',
+				{ membershipType: type },
+				{ withCredentials: true },
+			);
+			const { amount, keyId, currency, notes, orderId } = order.data;
+
+			const options = {
+				key: keyId,
+				amount,
+				currency,
+				name: 'DevBond Premium',
+				description: `${type} membership`,
+				order_id: orderId,
+				prefill: {
+					name: `${notes.firstName || ''} ${notes.lastName || ''}`,
+					email: notes.emailId,
+					contact: '9999999999',
+				},
+				theme: { color: '#2563eb' },
+				handler: verifyPremiumUser,
+			};
+
+			new window.Razorpay(options).open();
+		} catch {
+			toast.error('Payment initiation failed');
+		}
+	};
+
+	if (isUserPremium)
+		return (
+			<div className="flex flex-col items-center justify-center min-h-[70vh] text-gray-700">
+				<motion.h1
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					className="text-2xl font-semibold"
+				>
+					🎉 You're already a Premium Member!
+				</motion.h1>
+			</div>
 		);
 
-		// it should open the razorpay dialogbox
-		const { amount, keyId, currency, notes, orderId } = order.data;
-
-		const options = {
-			key: keyId,
-			amount,
-			currency,
-			name: 'DevBond',
-			description: 'Connect to other developers',
-			order_id: orderId,
-			prefill: {
-				name: notes.firstNmae + ' ' + notes.lastNmae,
-				email: notes.emailId,
-				contact: '9999999999',
-			},
-			theme: {
-				color: '#F37254',
-			},
-			// Handler function to verify the payment - after the payment was made by a user
-			handler: verifyPremiumUser,
-		};
-
-		const rzp = new window.Razorpay(options);
-		rzp.open();
-	};
-	return isUserPremium ? (
-		<div className="text-black">You're already a premium member</div>
-	) : (
-		<div className="flex w-full text-white m-10 mx-auto">
-			<div className="card bg-base-200 rounded-box grid h-80 grow place-items-center">
-				<h1>Silver Membership</h1>
-				<ul>
-					<li>Chat With other People</li>
-					<li>100 connection req per day</li>
-					<li>Blue Tick</li>
-				</ul>
-				<button
-					onClick={() => handleBuyClick('silver')}
-					className="btn btn-secondary"
+	return (
+		<div className="min-h-[70vh] flex flex-col md:flex-row items-center justify-center gap-8 px-6 py-12 text-gray-700">
+			{['Silver', 'Gold'].map((tier) => (
+				<motion.div
+					key={tier}
+					whileHover={{ scale: 1.05 }}
+					className="w-full md:w-80 bg-white rounded-2xl shadow-md border border-gray-200 p-6 text-center"
 				>
-					Buy Silver
-				</button>
-			</div>
-			<div className="divider divider-horizontal">OR</div>
-			<div className="card bg-base-200 rounded-box grid h-80 grow place-items-center">
-				<h1>Gold Membership</h1>
-				<ul>
-					<li>Chat With other People</li>
-					<li>100 connection req per day</li>
-					<li>Blue Tick</li>
-				</ul>
-				<button
-					onClick={() => handleBuyClick('gold')}
-					className="btn btn-primary"
-				>
-					Buy Gold
-				</button>
-			</div>
+					<h2 className="text-xl font-bold text-blue-600 mb-3">
+						{tier} Membership
+					</h2>
+					<ul className="space-y-2 text-sm text-gray-600 mb-4">
+						<li>💬 Chat with other developers</li>
+						<li>🔗 100 connection requests/day</li>
+						<li>✔️ Blue verification tick</li>
+					</ul>
+					<button
+						onClick={() => handleBuyClick(tier.toLowerCase())}
+						className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium py-2.5 rounded-xl hover:from-blue-700 hover:to-purple-700 transition"
+					>
+						Buy {tier}
+					</button>
+				</motion.div>
+			))}
 		</div>
 	);
 };
