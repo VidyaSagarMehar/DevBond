@@ -102,7 +102,7 @@ const UserCard = ({ user, showActions = true }) => {
 			>
 				{/* Front of card */}
 				<div className="absolute inset-0 backface-hidden">
-					<div className="relative h-full bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden transition-colors">
+					<div className="relative h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden transition-colors">
 						{/* Image Section */}
 						<div className="relative h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
 							<div
@@ -281,10 +281,10 @@ const UserCard = ({ user, showActions = true }) => {
 
 				{/* Back of card */}
 				<div className="absolute inset-0 backface-hidden rotate-y-180">
-					<div className="relative h-full bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden p-6 transition-colors">
+					<div className="relative h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden p-6 transition-colors">
 						<button
 							onClick={() => setIsFlipped(false)}
-							className="absolute top-4 right-4 w-8 h-8 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors"
+							className="absolute top-4 left-4 w-8 h-8 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors"
 						>
 							←
 						</button>

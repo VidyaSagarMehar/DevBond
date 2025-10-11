@@ -32,7 +32,7 @@ const RequestCard = ({ request, onAction }) => {
 			animate={{ opacity: 1, scale: 1, y: 0 }}
 			exit={{ opacity: 0, scale: 0.9, y: -20 }}
 			transition={{ duration: 0.3 }}
-			className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transition-colors"
+			className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transition-colors"
 		>
 			{/* Header */}
 			<div className="relative">
@@ -167,7 +167,7 @@ const Requests = () => {
 					{[...Array(6)].map((_, i) => (
 						<div
 							key={i}
-							className="bg-white dark:bg-gray-900 rounded-2xl p-6 animate-pulse"
+							className="bg-white dark:bg-gray-800 rounded-2xl p-6 animate-pulse"
 						>
 							<div className="h-32 bg-gray-200 dark:bg-gray-800 rounded-lg mb-4"></div>
 							<div className="space-y-3">
@@ -201,7 +201,7 @@ const Requests = () => {
 	}
 
 	return (
-		<div className="container mx-auto px-4">
+		<div className="container mx-auto px-4 py-6">
 			<div className="text-center mb-8">
 				<h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
 					Connection Requests

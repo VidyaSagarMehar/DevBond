@@ -83,25 +83,25 @@ const ConnectionCard = ({ connection, index }) => {
 				)}
 
 				{/* Action buttons */}
-				<div className="flex space-x-2">
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl text-sm font-medium transition-colors flex items-center justify-center space-x-2"
-					>
-						<MessageCircle className="w-4 h-4" />
-						<Link to={'/chat/' + _id}>
+				<div className="flex space-x-1">
+					<Link to={'/chat/' + _id} className="w-full flex justify-center">
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							className="w-5/5 bg-blue-500 cursor-pointer hover:bg-blue-600 text-white py-2 px-4 rounded-xl text-sm font-medium transition-colors flex items-center justify-center space-x-2"
+						>
+							<MessageCircle className="w-4 h-4" />
 							<span>Message</span>
-						</Link>
-					</motion.button>
+						</motion.button>
+					</Link>
 
-					<motion.button
+					{/* <motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						className="bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 p-2 rounded-xl transition-colors"
 					>
 						<Phone className="w-4 h-4" />
-					</motion.button>
+					</motion.button> */}
 				</div>
 			</div>
 		</motion.div>
@@ -174,7 +174,7 @@ const Connections = () => {
 	}
 
 	return (
-		<div className="container mx-auto px-4">
+		<div className="container mx-auto px-4 py-6">
 			<div className="text-center mb-8">
 				<h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
 					My Connections
