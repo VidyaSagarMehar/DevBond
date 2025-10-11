@@ -12,6 +12,7 @@ import Requests from './Components/Requests';
 import { Toaster } from 'react-hot-toast';
 import Premium from './Components/Premium';
 import Chat from './Components/Chat';
+import LandingPage from './Components/LandingPage';
 
 function App() {
 	return (
@@ -28,6 +29,7 @@ function App() {
 								<Route path="/premium" element={<Premium />} />
 								<Route path="/chat/:targetUserId" element={<Chat />} />
 							</Route>
+							<Route path="/welcome" element={<LandingPage />} />
 							<Route path="/login" element={<Login />} />
 						</Routes>
 					</AnimatePresence>

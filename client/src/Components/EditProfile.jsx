@@ -181,7 +181,7 @@ const EditProfile = ({ user }) => {
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+									<label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<MapPin className="w-4 h-4 mr-1 text-blue-600" />
 										Location
 									</label>
@@ -287,7 +287,7 @@ const EditProfile = ({ user }) => {
 
 							<div className="space-y-4">
 								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+									<label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<Github className="w-4 h-4 mr-1 text-gray-600" />
 										GitHub
 									</label>
@@ -301,7 +301,7 @@ const EditProfile = ({ user }) => {
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+									<label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<Linkedin className="w-4 h-4 mr-1 text-blue-600" />
 										LinkedIn
 									</label>
