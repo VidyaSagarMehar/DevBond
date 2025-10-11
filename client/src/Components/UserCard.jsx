@@ -102,7 +102,7 @@ const UserCard = ({ user, showActions = true }) => {
 			>
 				{/* Front of card */}
 				<div className="absolute inset-0 backface-hidden">
-					<div className="relative h-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+					<div className="relative h-full bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden transition-colors">
 						{/* Image Section */}
 						<div className="relative h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
 							<div
@@ -230,7 +230,7 @@ const UserCard = ({ user, showActions = true }) => {
 								{about &&
 									about !== 'This is a default about of the user' &&
 									about.trim() && (
-										<p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">
+										<p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3 mb-4">
 											{about}
 										</p>
 									)}
@@ -238,7 +238,7 @@ const UserCard = ({ user, showActions = true }) => {
 								{(!about ||
 									about === 'This is a default about of the user' ||
 									!about.trim()) && (
-									<p className="text-gray-400 text-sm italic mb-4">
+									<p className="text-gray-400 dark:text-gray-500 text-sm italic mb-4">
 										No bio added yet. Edit your profile to add a description!
 									</p>
 								)}
@@ -251,9 +251,9 @@ const UserCard = ({ user, showActions = true }) => {
 										whileHover={{ scale: 1.1 }}
 										whileTap={{ scale: 0.9 }}
 										onClick={() => handleAction('pass')}
-										className="w-14 h-14 bg-gray-100 hover:bg-red-100 rounded-full flex items-center justify-center transition-colors group"
+										className="w-14 h-14 bg-gray-100 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-red-900 rounded-full flex items-center justify-center transition-colors group"
 									>
-										<X className="w-6 h-6 text-gray-600 group-hover:text-red-500 transition-colors" />
+										<X className="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-red-500 transition-colors" />
 									</motion.button>
 
 									<motion.button
@@ -269,9 +269,9 @@ const UserCard = ({ user, showActions = true }) => {
 										whileHover={{ scale: 1.1 }}
 										whileTap={{ scale: 0.9 }}
 										onClick={() => setIsFlipped(true)}
-										className="w-14 h-14 bg-blue-100 hover:bg-blue-200 rounded-full flex items-center justify-center transition-colors"
+										className="w-14 h-14 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors"
 									>
-										<Star className="w-6 h-6 text-blue-600" />
+										<Star className="w-6 h-6 text-blue-600 dark:text-blue-300" />
 									</motion.button>
 								</div>
 							)}
@@ -281,17 +281,17 @@ const UserCard = ({ user, showActions = true }) => {
 
 				{/* Back of card */}
 				<div className="absolute inset-0 backface-hidden rotate-y-180">
-					<div className="relative h-full bg-white rounded-3xl shadow-2xl overflow-hidden p-6">
+					<div className="relative h-full bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden p-6 transition-colors">
 						<button
 							onClick={() => setIsFlipped(false)}
-							className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+							className="absolute top-4 right-4 w-8 h-8 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors"
 						>
 							←
 						</button>
 
 						<div className="h-full flex flex-col">
 							<div className="text-center mb-6">
-								<div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-4 border-4 border-blue-200">
+								<div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-4 border-4 border-blue-200 dark:border-blue-700">
 									<img
 										src={
 											photoUrl ||
@@ -305,10 +305,16 @@ const UserCard = ({ user, showActions = true }) => {
 										}}
 									/>
 								</div>
-								<h3 className="text-2xl font-bold text-gray-800">{fullName}</h3>
-								{role && <p className="text-gray-600">{role}</p>}
+								<h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+									{fullName}
+								</h3>
+								{role && (
+									<p className="text-gray-600 dark:text-gray-400">{role}</p>
+								)}
 								{location && (
-									<p className="text-gray-500 text-sm">📍 {location}</p>
+									<p className="text-gray-500 dark:text-gray-400 text-sm">
+										📍 {location}
+									</p>
 								)}
 							</div>
 
@@ -317,21 +323,25 @@ const UserCard = ({ user, showActions = true }) => {
 									about !== 'This is a default about of the user' &&
 									about.trim() && (
 										<div>
-											<h4 className="font-semibold text-gray-800 mb-2">
+											<h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
 												About
 											</h4>
-											<p className="text-gray-600 text-sm">{about}</p>
+											<p className="text-gray-600 dark:text-gray-300 text-sm">
+												{about}
+											</p>
 										</div>
 									)}
 
 								{skills && skills.length > 0 && (
 									<div>
-										<h4 className="font-semibold text-gray-800 mb-2">Skills</h4>
+										<h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
+											Skills
+										</h4>
 										<div className="flex flex-wrap gap-1">
 											{skills.map((skill, index) => (
 												<span
 													key={index}
-													className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+													className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 text-xs rounded-full"
 												>
 													{skill}
 												</span>
@@ -341,8 +351,10 @@ const UserCard = ({ user, showActions = true }) => {
 								)}
 
 								<div>
-									<h4 className="font-semibold text-gray-800 mb-2">Details</h4>
-									<div className="space-y-2 text-sm text-gray-600">
+									<h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
+										Details
+									</h4>
+									<div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
 										{age && <p>Age: {age}</p>}
 										{gender && (
 											<p>
@@ -357,7 +369,7 @@ const UserCard = ({ user, showActions = true }) => {
 								{/* Social Links */}
 								{(github || linkedin || website) && (
 									<div>
-										<h4 className="font-semibold text-gray-800 mb-2">
+										<h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
 											Connect
 										</h4>
 										<div className="flex space-x-3">
@@ -366,9 +378,9 @@ const UserCard = ({ user, showActions = true }) => {
 													href={github}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+													className="w-8 h-8 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors"
 												>
-													<Github className="w-4 h-4 text-gray-600" />
+													<Github className="w-4 h-4 text-gray-600 dark:text-gray-300" />
 												</a>
 											)}
 											{linkedin && (
@@ -376,9 +388,9 @@ const UserCard = ({ user, showActions = true }) => {
 													href={linkedin}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="w-8 h-8 bg-blue-100 hover:bg-blue-200 rounded-full flex items-center justify-center transition-colors"
+													className="w-8 h-8 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors"
 												>
-													<Linkedin className="w-4 h-4 text-blue-600" />
+													<Linkedin className="w-4 h-4 text-blue-600 dark:text-blue-300" />
 												</a>
 											)}
 											{website && (
@@ -386,9 +398,9 @@ const UserCard = ({ user, showActions = true }) => {
 													href={website}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="w-8 h-8 bg-green-100 hover:bg-green-200 rounded-full flex items-center justify-center transition-colors"
+													className="w-8 h-8 bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 rounded-full flex items-center justify-center transition-colors"
 												>
-													<Globe className="w-4 h-4 text-green-600" />
+													<Globe className="w-4 h-4 text-green-600 dark:text-green-300" />
 												</a>
 											)}
 										</div>

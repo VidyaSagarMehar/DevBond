@@ -32,13 +32,13 @@ const RequestCard = ({ request, onAction }) => {
 			animate={{ opacity: 1, scale: 1, y: 0 }}
 			exit={{ opacity: 0, scale: 0.9, y: -20 }}
 			transition={{ duration: 0.3 }}
-			className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+			className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transition-colors"
 		>
 			{/* Header */}
 			<div className="relative">
 				<div className="h-32 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500"></div>
 				<div className="absolute -bottom-8 left-6">
-					<div className="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-white">
+					<div className="w-16 h-16 rounded-full border-4 border-white dark:border-gray-700 shadow-lg overflow-hidden bg-white dark:bg-gray-800">
 						<img
 							src={photoUrl || '/default-avatar.png'}
 							alt={`${firstName}'s profile`}
@@ -47,7 +47,7 @@ const RequestCard = ({ request, onAction }) => {
 					</div>
 				</div>
 				<div className="absolute top-4 right-4">
-					<div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+					<div className="bg-white/20 dark:bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full">
 						<Heart className="w-4 h-4 text-white inline mr-1" />
 						<span className="text-white text-sm font-medium">
 							Interested in you
@@ -59,17 +59,17 @@ const RequestCard = ({ request, onAction }) => {
 			{/* Content */}
 			<div className="pt-10 p-6">
 				<div className="mb-4">
-					<h3 className="text-xl font-bold text-gray-800 mb-1">
+					<h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">
 						{firstName} {lastName}
 					</h3>
 
-					<div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+					<div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
 						{role && <span>{role}</span>}
 						{age && <span>{age} years</span>}
 					</div>
 
 					{about && (
-						<p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">
+						<p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3 mb-4">
 							{about}
 						</p>
 					)}
@@ -80,7 +80,7 @@ const RequestCard = ({ request, onAction }) => {
 								{skills.slice(0, 4).map((skill, index) => (
 									<span
 										key={index}
-										className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full"
+										className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full"
 									>
 										{skill}
 									</span>
@@ -96,7 +96,7 @@ const RequestCard = ({ request, onAction }) => {
 						whileHover={{ scale: 1.02 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => handleAction('rejected')}
-						className="flex-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
+						className="flex-1 bg-gray-100 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-red-900 text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
 					>
 						<XCircle className="w-5 h-5" />
 						<span>Decline</span>
@@ -165,11 +165,14 @@ const Requests = () => {
 			<div className="container mx-auto px-4">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{[...Array(6)].map((_, i) => (
-						<div key={i} className="bg-white rounded-2xl p-6 animate-pulse">
-							<div className="h-32 bg-gray-200 rounded-lg mb-4"></div>
+						<div
+							key={i}
+							className="bg-white dark:bg-gray-900 rounded-2xl p-6 animate-pulse"
+						>
+							<div className="h-32 bg-gray-200 dark:bg-gray-800 rounded-lg mb-4"></div>
 							<div className="space-y-3">
-								<div className="w-3/4 h-4 bg-gray-200 rounded"></div>
-								<div className="w-full h-3 bg-gray-200 rounded"></div>
+								<div className="w-3/4 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+								<div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
 							</div>
 						</div>
 					))}
@@ -182,13 +185,13 @@ const Requests = () => {
 		return (
 			<div className="container mx-auto px-4">
 				<div className="text-center py-12">
-					<div className="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+					<div className="w-24 h-24 bg-pink-100 dark:bg-pink-900 rounded-full flex items-center justify-center mx-auto mb-6">
 						<Heart className="w-12 h-12 text-pink-500" />
 					</div>
-					<h2 className="text-2xl font-bold text-gray-800 mb-3">
+					<h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">
 						No Connection Requests
 					</h2>
-					<p className="text-gray-600 max-w-md mx-auto">
+					<p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
 						When developers are interested in connecting with you, their
 						requests will appear here!
 					</p>
@@ -203,7 +206,7 @@ const Requests = () => {
 				<h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
 					Connection Requests
 				</h1>
-				<p className="text-gray-600">
+				<p className="text-gray-600 dark:text-gray-400">
 					{requests.length} developer{requests.length !== 1 ? 's' : ''}{' '}
 					interested in connecting
 				</p>

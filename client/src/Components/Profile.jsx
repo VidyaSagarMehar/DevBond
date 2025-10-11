@@ -3,13 +3,11 @@ import EditProfile from './EditProfile';
 import { useSelector } from 'react-redux';
 
 const Profile = () => {
-	const user = useSelector((store) => store.user.data); // ← Fixed selector
-
-	console.log('Profile user data:', user);
+	const user = useSelector((store) => store.user.data);
 
 	return (
 		user && (
-			<div>
+			<div className="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md transition-colors">
 				<EditProfile user={user} />
 			</div>
 		)

@@ -11,3 +11,5 @@ https://devbond.space
 <!-- FIXME: If i'm not friend, then i'll not be able to send message -->
 <!-- TODO: in the socket.js userId and targetUserId should be friend to send the message to each other -->
 <!-- TODO: feature - Show green symbol when online || last seen 2 hour ago-->
+<!-- TODO: on user card add icons of the know languages and tech -->
+<!-- TODO: search filter based on lang, tech, name, location -->

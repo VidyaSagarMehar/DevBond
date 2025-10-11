@@ -90,7 +90,9 @@ const EditProfile = ({ user }) => {
 					<h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
 						Edit Your Profile
 					</h1>
-					<p className="text-gray-600">Make a great first impression</p>
+					<p className="text-gray-600 dark:text-gray-400">
+						Make a great first impression
+					</p>
 				</div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -100,9 +102,9 @@ const EditProfile = ({ user }) => {
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
-							className="bg-white rounded-2xl p-6 shadow-lg"
+							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg"
 						>
-							<h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
 								<User className="w-5 h-5 mr-2 text-blue-600" />
 								Basic Information
 							</h2>
@@ -110,26 +112,26 @@ const EditProfile = ({ user }) => {
 							<div className="space-y-4">
 								<div className="grid grid-cols-2 gap-4">
 									<div>
-										<label className="block text-sm font-medium text-gray-700 mb-2">
+										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 											First Name
 										</label>
 										<input
 											type="text"
 											value={firstName}
 											onChange={(e) => setFirstName(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 											placeholder="John"
 										/>
 									</div>
 									<div>
-										<label className="block text-sm font-medium text-gray-700 mb-2">
+										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 											Last Name
 										</label>
 										<input
 											type="text"
 											value={lastName}
 											onChange={(e) => setLastName(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 											placeholder="Doe"
 										/>
 									</div>
@@ -137,25 +139,25 @@ const EditProfile = ({ user }) => {
 
 								<div className="grid grid-cols-2 gap-4">
 									<div>
-										<label className="block text-sm font-medium text-gray-700 mb-2">
+										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 											Age
 										</label>
 										<input
 											type="number"
 											value={age}
 											onChange={(e) => setAge(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 											placeholder="25"
 										/>
 									</div>
 									<div>
-										<label className="block text-sm font-medium text-gray-700 mb-2">
+										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 											Gender
 										</label>
 										<select
 											value={gender}
 											onChange={(e) => setGender(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										>
 											<option value="">Select Gender</option>
 											<option value="male">Male</option>
@@ -166,20 +168,20 @@ const EditProfile = ({ user }) => {
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 										Professional Role
 									</label>
 									<input
 										type="text"
 										value={role}
 										onChange={(e) => setRole(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="Frontend Developer"
 									/>
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<MapPin className="w-4 h-4 mr-1 text-blue-600" />
 										Location
 									</label>
@@ -187,33 +189,33 @@ const EditProfile = ({ user }) => {
 										type="text"
 										value={location}
 										onChange={(e) => setLocation(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="San Francisco, CA"
 									/>
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 										About Me
 									</label>
 									<textarea
 										rows={4}
 										value={about}
 										onChange={(e) => setAbout(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
 										placeholder="Tell us about yourself, your passion for coding, and what you're looking for..."
 									/>
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 										Profile Photo URL
 									</label>
 									<input
 										type="url"
 										value={photoUrl}
 										onChange={(e) => setPhotoUrl(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="https://example.com/your-photo.jpg"
 									/>
 								</div>
@@ -225,9 +227,9 @@ const EditProfile = ({ user }) => {
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1 }}
-							className="bg-white rounded-2xl p-6 shadow-lg"
+							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg"
 						>
-							<h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
 								<Code className="w-5 h-5 mr-2 text-blue-600" />
 								Skills & Technologies
 							</h2>
@@ -239,7 +241,7 @@ const EditProfile = ({ user }) => {
 										value={newSkill}
 										onChange={(e) => setNewSkill(e.target.value)}
 										onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-										className="flex-1 px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="flex-1 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="Add a skill (e.g., React, Python)"
 									/>
 									<button
@@ -255,7 +257,7 @@ const EditProfile = ({ user }) => {
 									{skills.map((skill, index) => (
 										<span
 											key={index}
-											className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full"
+											className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full"
 										>
 											{skill}
 											<button
@@ -276,16 +278,16 @@ const EditProfile = ({ user }) => {
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2 }}
-							className="bg-white rounded-2xl p-6 shadow-lg"
+							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg"
 						>
-							<h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
 								<Globe className="w-5 h-5 mr-2 text-blue-600" />
 								Social Links
 							</h2>
 
 							<div className="space-y-4">
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<Github className="w-4 h-4 mr-1 text-gray-600" />
 										GitHub
 									</label>
@@ -293,13 +295,13 @@ const EditProfile = ({ user }) => {
 										type="url"
 										value={github}
 										onChange={(e) => setGithub(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="https://github.com/yourusername"
 									/>
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<Linkedin className="w-4 h-4 mr-1 text-blue-600" />
 										LinkedIn
 									</label>
@@ -307,13 +309,13 @@ const EditProfile = ({ user }) => {
 										type="url"
 										value={linkedin}
 										onChange={(e) => setLinkedin(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="https://linkedin.com/in/yourprofile"
 									/>
 								</div>
 
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
 										<Globe className="w-4 h-4 mr-1 text-green-600" />
 										Personal Website
 									</label>
@@ -321,7 +323,7 @@ const EditProfile = ({ user }) => {
 										type="url"
 										value={website}
 										onChange={(e) => setWebsite(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
 										placeholder="https://yourportfolio.com"
 									/>
 								</div>
@@ -330,8 +332,10 @@ const EditProfile = ({ user }) => {
 
 						{/* Error Display */}
 						{error && (
-							<div className="bg-red-50 border border-red-200 rounded-xl p-4">
-								<p className="text-red-600 text-sm">{error}</p>
+							<div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-xl p-4">
+								<p className="text-red-600 dark:text-red-300 text-sm">
+									{error}
+								</p>
 							</div>
 						)}
 
@@ -365,7 +369,7 @@ const EditProfile = ({ user }) => {
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ delay: 0.3 }}
 						>
-							<h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
+							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
 								Live Preview
 							</h2>
 							{/* Pass all current state values to UserCard */}

@@ -13,7 +13,7 @@ const Body = () => {
 	const [loading, setLoading] = useState(true);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const userData = useSelector((store) => store.user.data); // ← Fixed selector
+	const userData = useSelector((store) => store.user.data);
 
 	const fetchUser = async () => {
 		if (userData) {
@@ -44,18 +44,18 @@ const Body = () => {
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+			<div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center transition-colors">
 				<motion.div
 					animate={{ rotate: 360 }}
 					transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-					className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full"
+					className="w-12 h-12 border-4 border-blue-200 dark:border-gray-600 border-t-blue-600 dark:border-t-blue-400 rounded-full"
 				/>
 			</div>
 		);
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
+		<div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-300">
 			<NavBar />
 			<main className="pt-20 pb-24 px-4">
 				<motion.div

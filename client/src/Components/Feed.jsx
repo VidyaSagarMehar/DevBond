@@ -39,7 +39,7 @@ const Feed = () => {
 	if (loading) {
 		return (
 			<div className="flex items-center justify-center min-h-[600px]">
-				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 dark:border-blue-400"></div>
 			</div>
 		);
 	}
@@ -47,13 +47,13 @@ const Feed = () => {
 	if (!feed || feed.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[600px] text-center px-6">
-				<div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-					<Heart className="w-12 h-12 text-blue-500" />
+				<div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-6">
+					<Heart className="w-12 h-12 text-blue-500 dark:text-blue-300" />
 				</div>
-				<h2 className="text-2xl font-bold text-gray-800 mb-3">
+				<h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">
 					No more developers nearby!
 				</h2>
-				<p className="text-gray-600 max-w-md">
+				<p className="text-gray-600 dark:text-gray-400 max-w-md">
 					You've seen all available developers in your area. Check back later
 					for new matches!
 				</p>
@@ -62,12 +62,12 @@ const Feed = () => {
 	}
 
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<div className="container mx-auto px-4 py-8 text-gray-800 dark:text-gray-100">
 			<div className="text-center mb-8">
 				<h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
 					Discover Developers
 				</h1>
-				<p className="text-gray-600 mt-2">
+				<p className="text-gray-600 dark:text-gray-400 mt-2">
 					Swipe right to connect, left to pass
 				</p>
 			</div>

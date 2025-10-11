@@ -129,11 +129,11 @@ const Chat = () => {
 	}
 
 	return (
-		<div className="mx-auto max-w-3xl h-[80vh] flex flex-col bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl shadow-md overflow-hidden">
+		<div className="mx-auto max-w-3xl h-[80vh] flex flex-col bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md overflow-hidden">
 			{/* Header */}
 			<div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
 				<div className="flex items-center gap-3">
-					<div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-sm font-semibold">
+					<div className="w-10 h-10 rounded-full bg-white/20 dark:bg-white/10 flex items-center justify-center text-sm font-semibold">
 						{targetUserId?.slice(0, 2)?.toUpperCase() || 'U'}
 					</div>
 					<div>
@@ -144,9 +144,9 @@ const Chat = () => {
 			</div>
 
 			{/* Messages */}
-			<div className="flex-1 overflow-y-auto px-4 py-4 bg-gradient-to-br from-slate-50 to-white space-y-3">
+			<div className="flex-1 overflow-y-auto px-4 py-4 bg-gradient-to-br from-slate-50 to-white dark:from-gray-900 dark:to-gray-800 space-y-3">
 				{messages.length === 0 ? (
-					<div className="text-center text-gray-400 mt-8">
+					<div className="text-center text-gray-400 dark:text-gray-500 mt-8">
 						No messages yet. Say hi 👋
 					</div>
 				) : (
@@ -165,7 +165,7 @@ const Chat = () => {
 									className={`max-w-[78%] px-4 py-2 rounded-2xl shadow-sm ${
 										isMine
 											? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-br-none'
-											: 'bg-gray-100 text-gray-800 rounded-bl-none'
+											: 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-bl-none'
 									}`}
 								>
 									<div className="text-sm">{msg.text}</div>
@@ -183,7 +183,7 @@ const Chat = () => {
 			</div>
 
 			{/* Input */}
-			<div className="px-4 py-3 border-t border-gray-200 flex items-center gap-3 bg-white">
+			<div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex items-center gap-3 bg-white dark:bg-gray-900 rounded-b-lg">
 				<input
 					value={newMessage}
 					onChange={(e) => setNewMessage(e.target.value)}
@@ -191,7 +191,7 @@ const Chat = () => {
 						if (e.key === 'Enter') sendMessage();
 					}}
 					placeholder="Type a message..."
-					className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+					className="flex-1 px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm placeholder-gray-400 dark:placeholder-gray-500"
 				/>
 				<button
 					onClick={sendMessage}
