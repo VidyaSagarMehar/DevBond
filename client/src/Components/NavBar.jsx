@@ -11,15 +11,18 @@ import {
 	BadgeCheck,
 	Moon,
 	Sun,
+	ChevronDown,
 } from 'lucide-react';
 import { removeUser } from '../utils/userSlice';
 import { useTheme } from '../contexts/ThemeContext';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const NavBar = () => {
 	const [imageError, setImageError] = useState(false);
+	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const { theme, toggleTheme } = useTheme();
 	const user = useSelector((store) => store.user.data);
 	const requests = useSelector((store) => store.requests);
@@ -96,35 +99,14 @@ const NavBar = () => {
 							))}
 						</div>
 
-						{/* Actions */}
-						<div className="flex items-center space-x-4">
-							{/* Theme Toggle */}
-							<button
-								onClick={toggleTheme}
-								className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-								title="Toggle Theme"
-							>
-								{theme === 'light' ? (
-									<Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-								) : (
-									<Sun className="w-5 h-5 text-yellow-400" />
-								)}
-							</button>
-
-							<Link to="/premium" title="Premium">
-								<BadgeCheck className="w-5 h-5 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition" />
-							</Link>
-
-							<button
-								onClick={handleLogout}
-								className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-600 transition"
-								title="Logout"
-							>
-								<LogOut className="w-5 h-5" />
-							</button>
-
-							<Link to="/profile">
-								<div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-300 dark:border-blue-700 hover:border-blue-500 transition">
+						{/* Profile + Dropdown */}
+						<div
+							className="relative"
+							onMouseEnter={() => setDropdownOpen(true)}
+							onMouseLeave={() => setDropdownOpen(false)}
+						>
+							<button className="flex items-center space-x-2 group">
+								<div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-300 dark:border-blue-700 group-hover:border-blue-500 transition">
 									<img
 										src={getProfileImageSrc()}
 										alt="Profile"
@@ -132,7 +114,55 @@ const NavBar = () => {
 										className="w-full h-full object-cover"
 									/>
 								</div>
-							</Link>
+								<ChevronDown className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+							</button>
+
+							<AnimatePresence>
+								{dropdownOpen && (
+									<motion.div
+										initial={{ opacity: 0, y: -10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										className="absolute right-0 mt-3 w-48 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+									>
+										<Link
+											to="/profile"
+											className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+										>
+											<User className="w-4 h-4" /> My Profile
+										</Link>
+
+										<Link
+											to="/premium"
+											className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+										>
+											<BadgeCheck className="w-4 h-4 text-blue-500" /> Premium
+										</Link>
+
+										<button
+											onClick={toggleTheme}
+											className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+										>
+											{theme === 'light' ? (
+												<>
+													<Moon className="w-4 h-4" /> Dark Mode
+												</>
+											) : (
+												<>
+													<Sun className="w-4 h-4 text-yellow-400" /> Light Mode
+												</>
+											)}
+										</button>
+
+										<button
+											onClick={handleLogout}
+											className="flex w-full items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+										>
+											<LogOut className="w-4 h-4" /> Logout
+										</button>
+									</motion.div>
+								)}
+							</AnimatePresence>
 						</div>
 					</div>
 				</div>
@@ -160,18 +190,69 @@ const NavBar = () => {
 						</Link>
 					))}
 
-					{/* Theme Toggle for mobile */}
-					<button
-						onClick={toggleTheme}
-						className="p-3 rounded-xl transition-all text-gray-600 dark:text-gray-300"
-						title="Toggle Theme"
-					>
-						{theme === 'light' ? (
-							<Moon className="w-6 h-6" />
-						) : (
-							<Sun className="w-6 h-6 text-yellow-400" />
-						)}
-					</button>
+					{/* Profile Dropdown for mobile */}
+					<div className="relative">
+						<button
+							onClick={() => setDropdownOpen((prev) => !prev)}
+							className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-300 dark:border-blue-700"
+						>
+							<img
+								src={getProfileImageSrc()}
+								onError={() => setImageError(true)}
+								alt="Profile"
+								className="w-full h-full object-cover"
+							/>
+						</button>
+
+						<AnimatePresence>
+							{dropdownOpen && (
+								<motion.div
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: 10 }}
+									className="absolute bottom-14 right-0 w-44 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2"
+								>
+									<Link
+										to="/profile"
+										className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+										onClick={() => setDropdownOpen(false)}
+									>
+										<User className="w-4 h-4" /> My Profile
+									</Link>
+									<Link
+										to="/premium"
+										className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+										onClick={() => setDropdownOpen(false)}
+									>
+										<BadgeCheck className="w-4 h-4 text-blue-500" /> Premium
+									</Link>
+									<button
+										onClick={() => {
+											toggleTheme();
+											setDropdownOpen(false);
+										}}
+										className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+									>
+										{theme === 'light' ? (
+											<>
+												<Moon className="w-4 h-4" /> Dark Mode
+											</>
+										) : (
+											<>
+												<Sun className="w-4 h-4 text-yellow-400" /> Light Mode
+											</>
+										)}
+									</button>
+									<button
+										onClick={handleLogout}
+										className="flex w-full items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30"
+									>
+										<LogOut className="w-4 h-4" /> Logout
+									</button>
+								</motion.div>
+							)}
+						</AnimatePresence>
+					</div>
 				</div>
 			</div>
 		</>
