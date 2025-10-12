@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Code2, Github, Twitter, Linkedin, Mail } from 'lucide-react';
+import { Heart, Code2, Github, Twitter, Linkedin, Mail, X } from 'lucide-react';
 
 const Footer = () => {
 	return (
@@ -24,29 +24,32 @@ const Footer = () => {
 					{/* Social Links */}
 					<div className="flex items-center justify-center space-x-4 mb-6">
 						<a
-							href="#"
+							href="https://github.com/VidyaSagarMehar"
+							target="blank"
 							className="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors group"
 						>
 							<Github className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-600" />
 						</a>
 						<a
-							href="#"
+							href="https://x.com/VidyaSagarMehar"
+							target="blank"
 							className="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors group"
 						>
-							<Twitter className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-600" />
+							<X className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-600" />
 						</a>
 						<a
-							href="#"
+							href="https://www.linkedin.com/in/vidya-sagar-mehar-bb576814a/"
+							target="blank"
 							className="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors group"
 						>
 							<Linkedin className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-600" />
 						</a>
-						<a
-							href="#"
+						{/* <a
+							href="mailto:vidyasagarmehar@gmail.com?subject=Hello&body=How are you?"
 							className="w-10 h-10 bg-gray-100 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors group"
 						>
 							<Mail className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-600" />
-						</a>
+						</a> */}
 					</div>
 
 					{/* Copyright */}
@@ -57,7 +60,7 @@ const Footer = () => {
 					</div>
 
 					<div className="mt-2 text-xs text-gray-400 dark:text-gray-500">
-						© 2025 DevBond. All rights reserved.
+						© {new Date().getFullYear()} DevBond. All rights reserved.
 					</div>
 				</div>
 			</div>

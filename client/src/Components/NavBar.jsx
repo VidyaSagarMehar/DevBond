@@ -105,7 +105,7 @@ const NavBar = () => {
 							onMouseEnter={() => setDropdownOpen(true)}
 							onMouseLeave={() => setDropdownOpen(false)}
 						>
-							<button className="flex items-center space-x-2 group">
+							<button className="flex items-center space-x-2 group cursor-pointer">
 								<div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-300 dark:border-blue-700 group-hover:border-blue-500 transition">
 									<img
 										src={getProfileImageSrc()}
@@ -150,7 +150,7 @@ const NavBar = () => {
 
 										<button
 											onClick={toggleTheme}
-											className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+											className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
 										>
 											{theme === 'light' ? (
 												<>
@@ -165,7 +165,7 @@ const NavBar = () => {
 
 										<button
 											onClick={handleLogout}
-											className="flex w-full items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+											className="flex w-full items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition cursor-pointer"
 										>
 											<LogOut className="w-4 h-4" /> Logout
 										</button>

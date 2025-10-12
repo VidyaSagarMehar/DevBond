@@ -14,7 +14,6 @@ const Chat = () => {
 	const userId = user?._id;
 	const firstName = user?.firstName || '';
 	const lastName = user?.lastName || '';
-
 	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState('');
 	const [loading, setLoading] = useState(true);
@@ -129,12 +128,12 @@ const Chat = () => {
 	}
 
 	return (
-		<div className="mx-auto max-w-3xl h-[80vh] flex flex-col bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md overflow-hidden">
+		<div className="mx-auto max-w-3xl h-[80vh] flex flex-col bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border sm:mt-8 border-gray-200 dark:border-gray-700 rounded-2xl shadow-md overflow-hidden">
 			{/* Header */}
 			<div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
 				<div className="flex items-center gap-3">
 					<div className="w-10 h-10 rounded-full bg-white/20 dark:bg-white/10 flex items-center justify-center text-sm font-semibold">
-						{targetUserId?.slice(0, 2)?.toUpperCase() || 'U'}
+						Chat ({messages.length})
 					</div>
 					<div>
 						<div className="font-semibold">Chat</div>
@@ -195,7 +194,7 @@ const Chat = () => {
 				/>
 				<button
 					onClick={sendMessage}
-					className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition"
+					className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition"
 					aria-label="Send message"
 				>
 					<Send className="w-4 h-4" />

@@ -247,7 +247,7 @@ const EditProfile = ({ user }) => {
 									<button
 										onClick={addSkill}
 										type="button"
-										className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
+										className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors cursor-pointer"
 									>
 										Add
 									</button>
@@ -346,7 +346,7 @@ const EditProfile = ({ user }) => {
 							onClick={saveProfile}
 							disabled={loading}
 							type="button"
-							className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center space-x-2"
+							className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center space-x-2 cursor-pointer"
 						>
 							{loading ? (
 								<>

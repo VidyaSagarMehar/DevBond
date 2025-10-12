@@ -13,3 +13,5 @@ https://devbond.space
 <!-- TODO: feature - Show green symbol when online || last seen 2 hour ago-->
 <!-- TODO: on user card add icons of the know languages and tech -->
 <!-- TODO: search filter based on lang, tech, name, location -->
+<!-- TODO: When entered in chat it should not scroll that much -->
+<!-- TODO: Swipe feature -->

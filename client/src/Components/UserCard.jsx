@@ -217,7 +217,7 @@ const UserCard = ({ user, showActions = true }) => {
 							{/* Flip button */}
 							<button
 								onClick={() => setIsFlipped(true)}
-								className="absolute top-4 left-4 w-8 h-8 bg-white/20 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+								className="absolute top-4 left-4 w-8 h-8 bg-white/20 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer"
 								title="View more details"
 							>
 								i
@@ -246,21 +246,21 @@ const UserCard = ({ user, showActions = true }) => {
 
 							{/* Action buttons */}
 							{showActions && (
-								<div className="flex justify-center space-x-4">
+								<div className="flex justify-center space-x-4 items-center">
 									<motion.button
 										whileHover={{ scale: 1.1 }}
 										whileTap={{ scale: 0.9 }}
 										onClick={() => handleAction('pass')}
-										className="w-14 h-14 bg-gray-100 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-red-900 rounded-full flex items-center justify-center transition-colors group"
+										className="w-14 h-14 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-red-800 rounded-full flex items-center justify-center transition-colors cursor-pointer"
 									>
-										<X className="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-red-500 transition-colors" />
+										<X className="w-7 h-7 text-white" />
 									</motion.button>
 
 									<motion.button
 										whileHover={{ scale: 1.1 }}
 										whileTap={{ scale: 0.9 }}
 										onClick={() => handleAction('interested')}
-										className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-full flex items-center justify-center transition-all shadow-lg hover:shadow-xl"
+										className="w-16 h-16 bg-gradient-to-r cursor-pointer from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-full flex items-center justify-center transition-all shadow-lg hover:shadow-xl"
 									>
 										<Heart className="w-7 h-7 text-white" />
 									</motion.button>
@@ -269,7 +269,7 @@ const UserCard = ({ user, showActions = true }) => {
 										whileHover={{ scale: 1.1 }}
 										whileTap={{ scale: 0.9 }}
 										onClick={() => setIsFlipped(true)}
-										className="w-14 h-14 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors"
+										className="w-14 h-14 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full flex items-center justify-center transition-colors cursor-pointer"
 									>
 										<Star className="w-6 h-6 text-blue-600 dark:text-blue-300" />
 									</motion.button>
@@ -284,7 +284,7 @@ const UserCard = ({ user, showActions = true }) => {
 					<div className="relative h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden p-6 transition-colors">
 						<button
 							onClick={() => setIsFlipped(false)}
-							className="absolute top-4 left-4 w-8 h-8 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors"
+							className="absolute top-4 left-4 w-8 h-8 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors cursor-pointer"
 						>
 							←
 						</button>

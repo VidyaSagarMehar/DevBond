@@ -96,7 +96,7 @@ const RequestCard = ({ request, onAction }) => {
 						whileHover={{ scale: 1.02 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => handleAction('rejected')}
-						className="flex-1 bg-gray-100 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-red-900 text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
+						className="flex-1 cursor-pointer bg-gray-100 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-red-900 text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
 					>
 						<XCircle className="w-5 h-5" />
 						<span>Decline</span>
@@ -106,7 +106,7 @@ const RequestCard = ({ request, onAction }) => {
 						whileHover={{ scale: 1.02 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => handleAction('accepted')}
-						className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+						className="flex-1 cursor-pointer bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
 					>
 						<CheckCircle className="w-5 h-5" />
 						<span>Accept</span>

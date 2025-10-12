@@ -17,7 +17,7 @@ export default function MouseTracker() {
 		const animate = () => {
 			setFollowerPos((prev) => ({
 				x: prev.x + (pos.x - prev.x) * 0.1, // delay
-				y: prev.y + (pos.y - prev.y) * 0.5,
+				y: prev.y + (pos.y - prev.y) * 0.1,
 			}));
 			animationFrame = requestAnimationFrame(animate);
 		};
@@ -31,10 +31,10 @@ export default function MouseTracker() {
 			style={{ overflow: 'hidden' }}
 		>
 			<div
-				className="absolute w-96 h-96 rounded-full bg-[#f99727]/14 blur-3xl"
+				className="absolute w-96 h-96 rounded-full bg-[#FF0066]/14 blur-3xl"
 				style={{
-					left: `${followerPos.x - 100}px`,
-					top: `${followerPos.y - 100}px`,
+					left: `${followerPos.x - 110}px`,
+					top: `${followerPos.y - 110}px`,
 				}}
 			></div>
 		</div>
