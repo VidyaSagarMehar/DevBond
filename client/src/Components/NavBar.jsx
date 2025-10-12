@@ -123,8 +123,17 @@ const NavBar = () => {
 										initial={{ opacity: 0, y: -10 }}
 										animate={{ opacity: 1, y: 0 }}
 										exit={{ opacity: 0, y: -10 }}
-										className="absolute right-0 mt-3 w-48 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+										className="absolute right-0 mt-3 w-52 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
 									>
+										{/* Greeting */}
+										<div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+											<p className="text-sm text-gray-500 dark:text-gray-400">
+												Hi,{' '}
+												<span className="font-medium">{user.firstName}</span> 👋
+											</p>
+										</div>
+
+										{/* Menu Options */}
 										<Link
 											to="/profile"
 											className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
@@ -212,6 +221,14 @@ const NavBar = () => {
 									exit={{ opacity: 0, y: 10 }}
 									className="absolute bottom-14 right-0 w-44 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2"
 								>
+									{/* Greeting */}
+									<div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+										<p className="text-sm text-gray-500 dark:text-gray-400">
+											Hi, <span className="font-medium">{user.firstName}</span>{' '}
+											👋
+										</p>
+									</div>
+
 									<Link
 										to="/profile"
 										className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -260,3 +277,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+5;

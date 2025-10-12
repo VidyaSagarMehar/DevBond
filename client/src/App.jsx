@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { AnimatePresence } from 'framer-motion';
 import appStore from './utils/appStore';
@@ -13,12 +13,14 @@ import { Toaster } from 'react-hot-toast';
 import Premium from './Components/Premium';
 import Chat from './Components/Chat';
 import LandingPage from './Components/LandingPage';
+import BackgroundEffects from './utils/BackgroundEffects.jsx';
 
 function App() {
 	return (
 		<Provider store={appStore}>
 			<div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
 				<BrowserRouter>
+					<BackgroundEffects />
 					<AnimatePresence mode="wait">
 						<Routes>
 							<Route path="/" element={<Body />}>
