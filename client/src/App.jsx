@@ -14,6 +14,7 @@ import Premium from './Components/Premium';
 import Chat from './Components/Chat';
 import LandingPage from './Components/LandingPage';
 import BackgroundEffects from './utils/BackgroundEffects.jsx';
+import Error from './Components/Error.jsx';
 
 function App() {
 	return (
@@ -33,6 +34,7 @@ function App() {
 							</Route>
 							<Route path="/welcome" element={<LandingPage />} />
 							<Route path="/login" element={<Login />} />
+							<Route path="*" element={<Error />} />
 						</Routes>
 					</AnimatePresence>
 				</BrowserRouter>
