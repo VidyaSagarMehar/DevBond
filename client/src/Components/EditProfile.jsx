@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
 	Save,
@@ -8,6 +8,9 @@ import {
 	Globe,
 	Github,
 	Linkedin,
+	Camera,
+	Upload,
+	Trash2,
 } from 'lucide-react';
 import UserCard from './UserCard';
 import axios from 'axios';
@@ -17,9 +20,8 @@ import { addUser } from '../utils/userSlice';
 import toast from 'react-hot-toast';
 
 const EditProfile = ({ user }) => {
-	console.log('EditProfile user:', user);
+	const dispatch = useDispatch();
 
-	// Initialize state with user data
 	const [firstName, setFirstName] = useState(user?.firstName || '');
 	const [lastName, setLastName] = useState(user?.lastName || '');
 	const [age, setAge] = useState(user?.age || '');
@@ -35,8 +37,63 @@ const EditProfile = ({ user }) => {
 	const [newSkill, setNewSkill] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
+	const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-	const dispatch = useDispatch();
+	const fileInputRef = useRef(null);
+
+	// ✅ Cloudinary Upload
+	const handlePhotoUpload = async (e) => {
+		const file = e.target.files[0];
+		if (!file) return;
+		if (!file.type.startsWith('image/'))
+			return toast.error('Please upload an image');
+		if (file.size > 5 * 1024 * 1024)
+			return toast.error('File too large (max 5MB)');
+
+		try {
+			setUploadingPhoto(true);
+			const formData = new FormData();
+			formData.append('photo', file);
+
+			const res = await axios.post(
+				`${BASE_URL}/profile/upload-photo`,
+				formData,
+				{
+					withCredentials: true,
+					headers: { 'Content-Type': 'multipart/form-data' },
+				},
+			);
+
+			setPhotoUrl(res.data.photoUrl);
+			dispatch(addUser(res.data.data));
+			toast.success('Photo uploaded successfully!');
+		} catch (err) {
+			toast.error(err.response?.data?.message || 'Upload failed');
+		} finally {
+			setUploadingPhoto(false);
+		}
+	};
+
+	// ✅ Delete photo
+	const handlePhotoDelete = async () => {
+		if (!window.confirm('Are you sure you want to delete your profile photo?'))
+			return;
+
+		try {
+			setUploadingPhoto(true);
+			const res = await axios.delete(`${BASE_URL}/profile/delete-photo`, {
+				withCredentials: true,
+			});
+
+			setPhotoUrl(res.data.data.photoUrl);
+			dispatch(addUser(res.data.data));
+			toast.success('Photo deleted successfully!');
+		} catch (err) {
+			toast.error(err.response?.data?.message || 'Delete failed');
+		} finally {
+			setUploadingPhoto(false);
+		}
+	};
 
 	const addSkill = () => {
 		if (newSkill.trim() && !skills.includes(newSkill.trim())) {
@@ -96,283 +153,253 @@ const EditProfile = ({ user }) => {
 				</div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-					{/* Form Section */}
+					{/* LEFT SIDE */}
 					<div className="space-y-6">
-						{/* Basic Info Card */}
+						{/* 🔹 Profile Photo */}
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg"
 						>
-							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
-								<User className="w-5 h-5 mr-2 text-blue-600" />
-								Basic Information
+							<h2 className="text-xl font-semibold mb-4 flex items-center">
+								<Camera className="w-5 h-5 mr-2 text-blue-600" /> Profile Photo
 							</h2>
-
-							<div className="space-y-4">
-								<div className="grid grid-cols-2 gap-4">
-									<div>
-										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-											First Name
-										</label>
-										<input
-											type="text"
-											value={firstName}
-											onChange={(e) => setFirstName(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-											placeholder="John"
-										/>
-									</div>
-									<div>
-										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-											Last Name
-										</label>
-										<input
-											type="text"
-											value={lastName}
-											onChange={(e) => setLastName(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-											placeholder="Doe"
-										/>
-									</div>
-								</div>
-
-								<div className="grid grid-cols-2 gap-4">
-									<div>
-										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-											Age
-										</label>
-										<input
-											type="number"
-											value={age}
-											onChange={(e) => setAge(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-											placeholder="25"
-										/>
-									</div>
-									<div>
-										<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-											Gender
-										</label>
-										<select
-											value={gender}
-											onChange={(e) => setGender(e.target.value)}
-											className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										>
-											<option value="">Select Gender</option>
-											<option value="male">Male</option>
-											<option value="female">Female</option>
-											<option value="other">Other</option>
-										</select>
-									</div>
-								</div>
-
-								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-										Professional Role
-									</label>
-									<input
-										type="text"
-										value={role}
-										onChange={(e) => setRole(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="Frontend Developer"
+							<div className="flex items-center space-x-6">
+								<div className="relative">
+									<img
+										src={
+											photoUrl ||
+											'https://www.pnrao.com/wp-content/uploads/2023/06/dummy-user-male.jpg'
+										}
+										alt="Profile"
+										className="w-24 h-24 rounded-full object-cover border-4 border-blue-200 dark:border-blue-700"
 									/>
+									{uploadingPhoto && (
+										<div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+											<div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+										</div>
+									)}
 								</div>
 
-								<div>
-									<label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-										<MapPin className="w-4 h-4 mr-1 text-blue-600" />
-										Location
-									</label>
+								<div className="flex-1 space-y-3">
 									<input
-										type="text"
-										value={location}
-										onChange={(e) => setLocation(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="San Francisco, CA"
-									/>
-								</div>
-
-								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-										About Me
-									</label>
-									<textarea
-										rows={4}
-										value={about}
-										onChange={(e) => setAbout(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-										placeholder="Tell us about yourself, your passion for coding, and what you're looking for..."
-									/>
-								</div>
-
-								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-										Profile Photo URL
-									</label>
-									<input
-										type="url"
-										value={photoUrl}
-										onChange={(e) => setPhotoUrl(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="https://example.com/your-photo.jpg"
-									/>
-								</div>
-							</div>
-						</motion.div>
-
-						{/* Skills Card */}
-						<motion.div
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.1 }}
-							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg"
-						>
-							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
-								<Code className="w-5 h-5 mr-2 text-blue-600" />
-								Skills & Technologies
-							</h2>
-
-							<div className="space-y-4">
-								<div className="flex space-x-2">
-									<input
-										type="text"
-										value={newSkill}
-										onChange={(e) => setNewSkill(e.target.value)}
-										onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-										className="flex-1 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="Add a skill (e.g., React, Python)"
+										ref={fileInputRef}
+										type="file"
+										accept="image/*"
+										onChange={handlePhotoUpload}
+										className="hidden"
 									/>
 									<button
-										onClick={addSkill}
+										onClick={() => fileInputRef.current?.click()}
+										disabled={uploadingPhoto}
 										type="button"
-										className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors cursor-pointer"
+										className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 flex items-center justify-center space-x-2"
 									>
-										Add
-									</button>
-								</div>
-
-								<div className="flex flex-wrap gap-2">
-									{skills.map((skill, index) => (
-										<span
-											key={index}
-											className="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full"
-										>
-											{skill}
-											<button
-												onClick={() => removeSkill(skill)}
-												type="button"
-												className="ml-2 text-blue-600 hover:text-blue-800 font-bold"
-											>
-												×
-											</button>
+										<Upload className="w-4 h-4" />
+										<span>
+											{uploadingPhoto ? 'Uploading...' : 'Upload Photo'}
 										</span>
-									))}
+									</button>
+									<button
+										onClick={handlePhotoDelete}
+										disabled={uploadingPhoto || !photoUrl}
+										type="button"
+										className="w-full px-4 py-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg font-medium transition-colors disabled:opacity-50 flex items-center justify-center space-x-2"
+									>
+										<Trash2 className="w-4 h-4" />
+										<span>Delete Photo</span>
+									</button>
 								</div>
 							</div>
 						</motion.div>
 
-						{/* Social Links Card */}
+						{/* 🔹 Basic Info */}
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.2 }}
-							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg"
+							className="bg-white dark:bg-slate-800 dark:text-gray-100 rounded-2xl p-6 shadow-lg space-y-4"
 						>
-							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
-								<Globe className="w-5 h-5 mr-2 text-blue-600" />
-								Social Links
+							<h2 className="text-xl font-semibold flex items-center">
+								<User className="w-5 h-5 mr-2 text-blue-600" /> Basic
+								Information
 							</h2>
 
-							<div className="space-y-4">
-								<div>
-									<label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-										<Github className="w-4 h-4 mr-1 text-gray-600" />
-										GitHub
-									</label>
-									<input
-										type="url"
-										value={github}
-										onChange={(e) => setGithub(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="https://github.com/yourusername"
-									/>
-								</div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+								<input
+									type="text"
+									placeholder="First Name"
+									value={firstName}
+									onChange={(e) => setFirstName(e.target.value)}
+									className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								/>
+								<input
+									type="text"
+									placeholder="Last Name"
+									value={lastName}
+									onChange={(e) => setLastName(e.target.value)}
+									className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								/>
+							</div>
 
-								<div>
-									<label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-										<Linkedin className="w-4 h-4 mr-1 text-blue-600" />
-										LinkedIn
-									</label>
-									<input
-										type="url"
-										value={linkedin}
-										onChange={(e) => setLinkedin(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="https://linkedin.com/in/yourprofile"
-									/>
-								</div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+								<input
+									type="number"
+									placeholder="Age"
+									value={age}
+									onChange={(e) => setAge(e.target.value)}
+									className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								/>
+								<select
+									value={gender}
+									onChange={(e) => setGender(e.target.value)}
+									className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								>
+									<option value="">Select Gender</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+									<option value="other">Other</option>
+								</select>
+							</div>
 
-								<div>
-									<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-										<Globe className="w-4 h-4 mr-1 text-green-600" />
-										Personal Website
-									</label>
-									<input
-										type="url"
-										value={website}
-										onChange={(e) => setWebsite(e.target.value)}
-										className="w-full px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-										placeholder="https://yourportfolio.com"
-									/>
-								</div>
+							<input
+								type="text"
+								placeholder="Role (e.g. Frontend Developer)"
+								value={role}
+								onChange={(e) => setRole(e.target.value)}
+								className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+							/>
+
+							<div className="flex items-center space-x-2">
+								<MapPin className="w-4 h-4 text-gray-500" />
+								<input
+									type="text"
+									placeholder="Location"
+									value={location}
+									onChange={(e) => setLocation(e.target.value)}
+									className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								/>
+							</div>
+
+							<textarea
+								rows="3"
+								placeholder="About you..."
+								value={about}
+								onChange={(e) => setAbout(e.target.value)}
+								className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+							/>
+						</motion.div>
+
+						{/* 🔹 Skills Section */}
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg space-y-4"
+						>
+							<h2 className="text-xl font-semibold flex items-center">
+								<Code className="w-5 h-5 mr-2 text-blue-600" /> Skills
+							</h2>
+							<div className="flex space-x-2">
+								<input
+									type="text"
+									placeholder="Add skill"
+									value={newSkill}
+									onChange={(e) => setNewSkill(e.target.value)}
+									onKeyDown={(e) => e.key === 'Enter' && addSkill()}
+									className="flex-1 px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								/>
+								<button
+									onClick={addSkill}
+									className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+								>
+									Add
+								</button>
+							</div>
+							<div className="flex flex-wrap gap-2">
+								{skills.map((skill, index) => (
+									<span
+										key={index}
+										className="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-full text-sm flex items-center space-x-2"
+									>
+										{skill}
+										<button
+											onClick={() => removeSkill(skill)}
+											className="ml-1 text-red-500 hover:text-red-700"
+										>
+											×
+										</button>
+									</span>
+								))}
 							</div>
 						</motion.div>
 
-						{/* Error Display */}
-						{error && (
-							<div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-xl p-4">
-								<p className="text-red-600 dark:text-red-300 text-sm">
-									{error}
-								</p>
+						{/* 🔹 Social Links */}
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg space-y-4"
+						>
+							<h2 className="text-xl font-semibold flex items-center">
+								<Globe className="w-5 h-5 mr-2 text-blue-600" /> Social Links
+							</h2>
+							<div className="space-y-3">
+								<div className="flex items-center space-x-2">
+									<Github className="w-4 h-4 text-gray-500" />
+									<input
+										type="text"
+										placeholder="GitHub URL"
+										value={github}
+										onChange={(e) => setGithub(e.target.value)}
+										className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+									/>
+								</div>
+								<div className="flex items-center space-x-2">
+									<Linkedin className="w-4 h-4 text-gray-500" />
+									<input
+										type="text"
+										placeholder="LinkedIn URL"
+										value={linkedin}
+										onChange={(e) => setLinkedin(e.target.value)}
+										className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+									/>
+								</div>
+								<input
+									type="text"
+									placeholder="Website"
+									value={website}
+									onChange={(e) => setWebsite(e.target.value)}
+									className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+								/>
 							</div>
-						)}
+						</motion.div>
 
-						{/* Save Button */}
+						{/* Error + Save */}
+						{error && <p className="text-red-500">{error}</p>}
 						<motion.button
-							whileHover={{ scale: 1.02 }}
-							whileTap={{ scale: 0.98 }}
-							onClick={saveProfile}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
 							disabled={loading}
-							type="button"
-							className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center space-x-2 cursor-pointer"
+							onClick={saveProfile}
+							className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition"
 						>
 							{loading ? (
-								<>
-									<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-									<span>Saving...</span>
-								</>
+								'Saving...'
 							) : (
 								<>
-									<Save className="w-5 h-5" />
-									<span>Save Profile</span>
+									<Save className="inline w-5 h-5 mr-2" /> Save Profile
 								</>
 							)}
 						</motion.button>
 					</div>
 
-					{/* Preview Section */}
+					{/* RIGHT SIDE - Live Preview */}
 					<div className="lg:sticky lg:top-8">
 						<motion.div
 							initial={{ opacity: 0, x: 20 }}
 							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.3 }}
 						>
-							<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
+							<h2 className="text-xl font-semibold mb-4 text-center">
 								Live Preview
 							</h2>
-							{/* Pass all current state values to UserCard */}
 							<UserCard
 								user={{
 									firstName,

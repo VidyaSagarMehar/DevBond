@@ -15,3 +15,4 @@ https://devbond.space
 <!-- TODO: search filter based on lang, tech, name, location -->
 <!-- TODO: When entered in chat it should not scroll that much -->
 <!-- TODO: Swipe feature -->
+<!-- TODO: favicon -->
