@@ -100,9 +100,12 @@ const LandingPage = () => {
 					</p>
 
 					<motion.button
+						onClick={() => {
+							navigate('/login');
+							console.log('clicked');
+						}}
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
-						onClick={() => navigate('/login')}
 						className="px-8 py-3 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all cursor-pointer"
 					>
 						Get Started
@@ -163,7 +166,7 @@ const LandingPage = () => {
 							<div className="flex flex-wrap gap-4">
 								<button
 									onClick={() => navigate('/login')}
-									className="group px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+									className="group px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer"
 								>
 									Get Started Free
 									<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -294,8 +297,8 @@ const LandingPage = () => {
 			</section>
 
 			{/* Premium Section */}
-			<section className="py-24 px-6 bg-gradient-to-br from-blue-900 to-purple-900 dark:from-gray-950 dark:to-gray-900 overflow-hidden">
-				<div className="absolute inset-0 opacity-10">
+			<section className="relative py-24 px-6 bg-gradient-to-br from-blue-900 to-purple-900 dark:from-gray-950 dark:to-gray-900 overflow-hidden">
+				<div className="absolute inset-0 opacity-10 pointer-events-none">
 					<div
 						className="absolute inset-0"
 						style={{
@@ -331,13 +334,13 @@ const LandingPage = () => {
 					<div className="flex flex-wrap justify-center gap-4">
 						<button
 							onClick={() => navigate('/login')}
-							className="px-8 py-4 bg-yellow-400 text-gray-900 font-bold rounded-2xl hover:bg-yellow-300 transition-all hover:scale-105 shadow-lg"
+							className="px-8 py-4 bg-yellow-400 text-gray-900 font-bold rounded-2xl hover:bg-yellow-300 transition-all hover:scale-105 shadow-lg cursor-pointer"
 						>
 							Go Premium - ₹199/mo
 						</button>
 						<button
 							onClick={() => navigate('/login')}
-							className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-2xl border-2 border-white/20 hover:bg-white/20 transition-all"
+							className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-2xl border-2 border-white/20 hover:bg-white/20 transition-all cursor-pointer"
 						>
 							Compare Plans
 						</button>

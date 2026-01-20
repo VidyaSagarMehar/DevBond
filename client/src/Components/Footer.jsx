@@ -56,7 +56,7 @@ const Footer = () => {
 					<div className="flex items-center justify-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
 						<span>Made with</span>
 						<Heart className="w-4 h-4 text-red-500 fill-current" />
-						<span>for developers by developers</span>
+						<span>for developers by a developer</span>
 					</div>
 
 					<div className="mt-2 text-xs text-gray-400 dark:text-gray-500">
