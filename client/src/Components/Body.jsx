@@ -7,6 +7,7 @@ import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { addRequests } from '../utils/requestSlice';
 import toast from 'react-hot-toast';
 
 const Body = () => {
@@ -15,6 +16,7 @@ const Body = () => {
 	const navigate = useNavigate();
 	const userData = useSelector((store) => store.user.data);
 
+	// ✅ FETCH USER PROFILE
 	const fetchUser = async () => {
 		if (userData) {
 			setLoading(false);
@@ -27,7 +29,7 @@ const Body = () => {
 			});
 			dispatch(addUser(res.data));
 		} catch (err) {
-			if (err.status === 401) {
+			if (err?.response?.status === 401) {
 				navigate('/welcome');
 			} else {
 				toast.error('Failed to load user data');
@@ -38,8 +40,21 @@ const Body = () => {
 		}
 	};
 
+	// ✅ FETCH PENDING REQUESTS FOR BADGE
+	const fetchRequests = async () => {
+		try {
+			const res = await axios.get(`${BASE_URL}/user/requests/received`, {
+				withCredentials: true,
+			});
+			dispatch(addRequests(res.data.data));
+		} catch (err) {
+			console.log('Failed to fetch requests');
+		}
+	};
+
 	useEffect(() => {
 		fetchUser();
+		fetchRequests(); // ✅ ADDED — so badge works on login & refresh
 	}, []);
 
 	if (loading) {

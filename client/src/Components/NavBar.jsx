@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -30,6 +30,11 @@ const NavBar = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
+	useEffect(() => {
+		// Close dropdown when route changes
+		setDropdownOpen(false);
+	}, [location.pathname]);
+
 	const handleLogout = async () => {
 		try {
 			await axios.post(BASE_URL + '/logout', {}, { withCredentials: true });
@@ -42,9 +47,7 @@ const NavBar = () => {
 	};
 
 	const getProfileImageSrc = () =>
-		imageError || !user?.photoUrl
-			? 'https://www.pnrao.com/wp-content/uploads/2023/06/dummy-user-male.jpg'
-			: user.photoUrl;
+		imageError || !user?.photoUrl ? '/profile-placeholder.avif' : user.photoUrl;
 
 	const navItems = [
 		{ path: '/', icon: Home, label: 'Discover' },
