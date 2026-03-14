@@ -1,50 +1,41 @@
 require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/database');
-const app = express();
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-require('./utils/cronJob');
-const http = require('http');
+
+const app = express();
+
+connectDB();
 
 app.use(
 	cors({
-		origin: 'http://localhost:5173',
+		origin: [
+			'http://localhost:5173',
+			'https://devbond.space',
+			'https://www.devbond.space',
+			'https://dev-bond.vercel.app',
+		],
 		credentials: true,
 	}),
 );
+
 app.use(express.json());
 app.use(cookieParser());
+
 // routes
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const requestRouter = require('./routes/request');
 const userRouter = require('./routes/user');
 const paymentRouter = require('./routes/payment');
-const initializeSocket = require('./utils/socket');
 const chatRouter = require('./routes/chat');
 
-app.use('/', authRouter);
-app.use('/', profileRouter);
-app.use('/', requestRouter);
-app.use('/', userRouter);
-app.use('/', paymentRouter);
-app.use('/', chatRouter);
+app.use('/api', authRouter);
+app.use('/api', profileRouter);
+app.use('/api', requestRouter);
+app.use('/api', userRouter);
+app.use('/api', paymentRouter);
+app.use('/api', chatRouter);
 
-// server for socket.io
-const server = http.createServer(app);
-initializeSocket(server);
-
-connectDB()
-	.then(() => {
-		console.log('Database Connected sucessfully');
-		server.listen(process.env.PORT, () => {
-			console.log(
-				`Server is successfully listining on port ${process.env.PORT}`,
-			);
-		});
-	})
-	.catch((err) => {
-		console.log(err);
-		console.error('Data cannot be connected');
-	});
+module.exports = app;
