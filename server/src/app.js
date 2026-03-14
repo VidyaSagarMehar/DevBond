@@ -8,17 +8,32 @@ const app = express();
 
 connectDB();
 
+const allowedOrigins = [
+	'http://localhost:5173',
+	'https://devbond.space',
+	'https://www.devbond.space',
+	'https://dev-bond.vercel.app',
+];
+
 app.use(
 	cors({
-		origin: [
-			'http://localhost:5173',
-			'https://devbond.space',
-			'https://www.devbond.space',
-			'https://dev-bond.vercel.app',
-		],
+		origin: function (origin, callback) {
+			// allow requests with no origin like postman/server-to-server
+			if (!origin) return callback(null, true);
+
+			if (allowedOrigins.includes(origin)) {
+				return callback(null, true);
+			}
+
+			return callback(new Error(`CORS not allowed for origin: ${origin}`));
+		},
 		credentials: true,
+		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+		allowedHeaders: ['Content-Type', 'Authorization'],
 	}),
 );
+
+app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());
