@@ -28,8 +28,8 @@ authRouter.post('/signup', async (req, res) => {
 		// res.cookie('token', token);
 		res.cookie('token', token, {
 			httpOnly: true,
-			secure: true, // ✅ REQUIRED for production (HTTPS)
-			sameSite: 'None', // ✅ REQUIRED for cross-origin
+			secure: true,
+			sameSite: 'None',
 		});
 
 		res.json({ message: 'User Added successfully!', data: savedUser });
@@ -58,8 +58,8 @@ authRouter.post('/login', async (req, res) => {
 			// res.cookie('token', token);
 			res.cookie('token', token, {
 				httpOnly: true,
-				secure: true, // ✅ REQUIRED for production (HTTPS)
-				sameSite: 'None', // ✅ REQUIRED for cross-origin
+				secure: true,
+				sameSite: 'None',
 			});
 			res.send(user);
 		} else {

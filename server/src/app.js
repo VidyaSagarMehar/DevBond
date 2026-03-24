@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/database');
 const app = express();
+app.set('trust proxy', 1);
+
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const http = require('http');
@@ -11,10 +13,17 @@ if (process.env.ENABLE_CRON === 'true') {
 
 app.use(
 	cors({
-		origin: [
-			'http://localhost:5173',
-			process.env.FRONTEND_URL, // add your frontend URL in env
-		],
+		origin: function (origin, callback) {
+			const allowedOrigins = [
+				'http://localhost:5173',
+				'https://dev-bond.vercel.app',
+			];
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
 		credentials: true,
 	}),
 );
