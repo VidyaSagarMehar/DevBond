@@ -1,5 +1,5 @@
 export const BASE_URL =
-	location.hostname === 'localhost' ? 'http://localhost:7777' : '/api';
+	import.meta.env.VITE_BASE_URL || 'http://localhost:7777';
 
 // Modern design tokens
 export const COLORS = {
