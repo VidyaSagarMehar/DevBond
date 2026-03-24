@@ -17,6 +17,7 @@ app.use(
 			const allowedOrigins = [
 				'http://localhost:5173',
 				'https://devbond.space',
+				'https://www.devbond.space',
 				'https://dev-bond.vercel.app',
 			];
 			if (!origin || allowedOrigins.includes(origin)) {
@@ -28,6 +29,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());
