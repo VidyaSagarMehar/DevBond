@@ -16,6 +16,7 @@ app.use(
 		origin: function (origin, callback) {
 			const allowedOrigins = [
 				'http://localhost:5173',
+				'https://devbond.space',
 				'https://dev-bond.vercel.app',
 			];
 			if (!origin || allowedOrigins.includes(origin)) {
