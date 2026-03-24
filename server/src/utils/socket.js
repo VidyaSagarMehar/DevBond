@@ -1,9 +1,7 @@
 const socket = require('socket.io');
 const crypto = require('crypto');
 const { Chat } = require('../models/chat');
-const connectionRequest = require('../models/connectionRequest');
 
-// Creating encrypted room id
 const getSecretRoomId = (userId, targetUserId) => {
 	return crypto
 		.createHash('sha256')
@@ -14,34 +12,30 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
 	const io = socket(server, {
 		cors: {
-			origin: 'http://localhost:5173',
+			origin: true, // ✅ allow all (or use env)
+			credentials: true,
 		},
 	});
-	// Accept connection
+
 	io.on('connection', (socket) => {
-		// Handle Events
+		console.log('User connected:', socket.id);
+
 		socket.on('joinChat', ({ firstName, userId, targetUserId }) => {
 			const roomId = getSecretRoomId(userId, targetUserId);
-
-			console.log(firstName + ' Joined Room : ' + roomId);
-
 			socket.join(roomId);
+			console.log(`${firstName} joined room ${roomId}`);
 		});
+
 		socket.on(
 			'sendMessage',
 			async ({ firstName, lastName, userId, targetUserId, text }) => {
-				// Save messages to the database
 				try {
-					//TODO: check if the userId and the targetUserId are friend
-					// connectionRequest.findOne({fromUserId : userId, toUserId: targetUserId, status: "accepted"})
-
 					const roomId = getSecretRoomId(userId, targetUserId);
-					console.log(firstName + ' ' + text);
 
 					let chat = await Chat.findOne({
 						participants: { $all: [userId, targetUserId] },
 					});
-					// If the chat is happeing for the first time
+
 					if (!chat) {
 						chat = new Chat({
 							participants: [userId, targetUserId],
@@ -49,19 +43,23 @@ const initializeSocket = (server) => {
 						});
 					}
 
-					chat.messages.push({
-						senderId: userId,
+					chat.messages.push({ senderId: userId, text });
+					await chat.save();
+
+					io.to(roomId).emit('messageRecieved', {
+						firstName,
+						lastName,
 						text,
 					});
-
-					await chat.save();
-					io.to(roomId).emit('messageRecieved', { firstName, lastName, text });
 				} catch (err) {
 					console.log(err.message);
 				}
 			},
 		);
-		socket.on('disconnect', () => {});
+
+		socket.on('disconnect', () => {
+			console.log('User disconnected:', socket.id);
+		});
 	});
 };
 

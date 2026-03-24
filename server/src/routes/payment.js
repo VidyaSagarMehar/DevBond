@@ -94,7 +94,7 @@ paymentRouter.get('/premium/verify', userAuth, async (req, res) => {
 		if (user.isPremium) {
 			return res.json({ isPremium: true });
 		}
-		return res.json({ isPremium: flase });
+		return res.json({ isPremium: false });
 	} catch (err) {
 		return res.status(500).json({ message: err.message });
 	}

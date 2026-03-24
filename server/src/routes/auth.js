@@ -25,7 +25,12 @@ authRouter.post('/signup', async (req, res) => {
 		const token = await savedUser.getJWT();
 		console.log(token);
 		// Add the token to cookie and send the response back to the user
-		res.cookie('token', token);
+		// res.cookie('token', token);
+		res.cookie('token', token, {
+			httpOnly: true,
+			secure: true, // ✅ REQUIRED for production (HTTPS)
+			sameSite: 'None', // ✅ REQUIRED for cross-origin
+		});
 
 		res.json({ message: 'User Added successfully!', data: savedUser });
 	} catch (err) {
@@ -50,7 +55,12 @@ authRouter.post('/login', async (req, res) => {
 			const token = await user.getJWT();
 			console.log(token);
 			// Add the token to cookie and send the response back to the user
-			res.cookie('token', token);
+			// res.cookie('token', token);
+			res.cookie('token', token, {
+				httpOnly: true,
+				secure: true, // ✅ REQUIRED for production (HTTPS)
+				sameSite: 'None', // ✅ REQUIRED for cross-origin
+			});
 			res.send(user);
 		} else {
 			throw new Error('Invalid credentials');

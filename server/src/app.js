@@ -4,24 +4,30 @@ const connectDB = require('./config/database');
 const app = express();
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-require('./utils/cronJob');
 const http = require('http');
+if (process.env.ENABLE_CRON === 'true') {
+	require('./utils/cronJob');
+}
 
 app.use(
 	cors({
-		origin: 'http://localhost:5173',
+		origin: [
+			'http://localhost:5173',
+			process.env.FRONTEND_URL, // add your frontend URL in env
+		],
 		credentials: true,
 	}),
 );
+
 app.use(express.json());
 app.use(cookieParser());
+
 // routes
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const requestRouter = require('./routes/request');
 const userRouter = require('./routes/user');
 const paymentRouter = require('./routes/payment');
-const initializeSocket = require('./utils/socket');
 const chatRouter = require('./routes/chat');
 
 app.use('/', authRouter);
@@ -33,18 +39,19 @@ app.use('/', chatRouter);
 
 // server for socket.io
 const server = http.createServer(app);
+const initializeSocket = require('./utils/socket');
 initializeSocket(server);
+
+// ✅ PORT FIX (RENDER REQUIRED)
+const PORT = process.env.PORT || 3000;
 
 connectDB()
 	.then(() => {
-		console.log('Database Connected sucessfully');
-		server.listen(process.env.PORT, () => {
-			console.log(
-				`Server is successfully listining on port ${process.env.PORT}`,
-			);
+		console.log('Database Connected successfully');
+		server.listen(PORT, () => {
+			console.log(`Server running on port ${PORT}`);
 		});
 	})
 	.catch((err) => {
-		console.log(err);
-		console.error('Data cannot be connected');
+		console.error('Database connection failed', err);
 	});
