@@ -30,6 +30,7 @@ authRouter.post('/signup', async (req, res) => {
 			httpOnly: true,
 			secure: true,
 			sameSite: 'None',
+			path: '/',
 		});
 
 		res.json({ message: 'User Added successfully!', data: savedUser });
@@ -60,6 +61,7 @@ authRouter.post('/login', async (req, res) => {
 				httpOnly: true,
 				secure: true,
 				sameSite: 'None',
+				path: '/',
 			});
 			res.send(user);
 		} else {
@@ -73,9 +75,13 @@ authRouter.post('/login', async (req, res) => {
 // Logout the user
 authRouter.post('/logout', async (req, res) => {
 	try {
-		res.cookie('token', null, {
-			expires: new Date(Date.now()),
+		res.clearCookie('token', {
+			httpOnly: true,
+			secure: true,
+			sameSite: 'None',
+			path: '/',
 		});
+
 		res.send('Logged Out successfully');
 	} catch (err) {
 		res.status(400).send({ error: 'error logging out', message: err.message });

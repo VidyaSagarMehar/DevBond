@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
@@ -124,7 +125,7 @@ const userSchema = new mongoose.Schema(
 // Separating the JWT sign in schema level validation
 userSchema.methods.getJWT = async function () {
 	const user = this; // this is pointing to user instance
-	const token = await jwt.sign({ _id: user._id }, 'ThisIsMySecretKey', {
+	const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
 		expiresIn: '7d',
 	});
 	return token;
